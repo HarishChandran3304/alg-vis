@@ -1,6 +1,6 @@
 ![Logo](Logo.svg)
 
-# <center>Path-Finding and Sorting Algorithms Visualized</center>
+<h1 align="center">Path-Finding and Sorting Algorithms Visualized</h1>
 
 # About
 
