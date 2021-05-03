@@ -3,7 +3,7 @@ import pygame
 import pygame_menu
 from Algorithms.PathFinding.DijkstrasAlgorithm import dijkstra
 from Algorithms.PathFinding.AStarSearch import astar
-from Algorithms.Sorting.BinarySort import binarysort
+from Algorithms.Sorting.MergeSort import mergesort
 from Algorithms.Sorting.BubbleSort import bubblesort
 
 
