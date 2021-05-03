@@ -40,9 +40,8 @@ def pathfinding_menu():
     
 def sorting_menu():
     main_menu = pygame_menu.Menu(720, 1280, 'Sorting Algorithms', theme=pygame_menu.themes.THEME_DARK)
-    main_menu.add.button('Alg-1', foo)
-    main_menu.add.button('Alg-2', foo)
-    main_menu.add.button('Alg-3', foo)
+    main_menu.add.button('Bubble Sort', foo)
+    main_menu.add.button('Merge Sort', foo)
     main_menu.add.button('Back', select_menu)
     main_menu.mainloop(screen)
 
