@@ -1,6 +1,8 @@
 #IMPORTS
 import pygame
 import pygame_menu
+from Algorithms.PathFinding.DijkstrasAlgorithm import dijkstra
+from Algorithms.PathFinding.AStarSearch import astar
 
 
 #CONSTANTS
@@ -21,7 +23,7 @@ def main_menu():
     main_menu.mainloop(screen)
     
 def select_menu():
-    select_menu = pygame_menu.Menu(720, 1280, 'Select', theme=pygame_menu.themes.THEME_DARK)
+    select_menu = pygame_menu.Menu(720, 1280, 'Algorithms', theme=pygame_menu.themes.THEME_DARK)
     select_menu.add.button('Path-Finding Algorithms', pathfinding_menu)
     select_menu.add.button('Sorting Algorithms', sorting_menu)
     select_menu.add.button('Back', main_menu)
@@ -29,9 +31,8 @@ def select_menu():
 
 def pathfinding_menu():
     main_menu = pygame_menu.Menu(720, 1280, 'Path-Finding Algorithms', theme=pygame_menu.themes.THEME_DARK)
-    main_menu.add.button('Alg-1', foo)
-    main_menu.add.button('Alg-2', foo)
-    main_menu.add.button('Alg-3', foo)
+    main_menu.add.button('A* Search', foo)
+    main_menu.add.button('Dijkstra\'s Algorithm', foo)
     main_menu.add.button('Back', select_menu)
     main_menu.mainloop(screen)
     
