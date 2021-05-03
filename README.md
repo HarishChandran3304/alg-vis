@@ -11,8 +11,8 @@ An interactive tool to visualize path-finding and sorting algorithms built using
 ### Algorithms:
 
 - ### Path-Finding
-  - Dijkstra's Algorithm
   - A\* Search
+  - Dijkstra's Algorithm
 - ### Sorting
   - Bubble Sort
   - Merge Sort
