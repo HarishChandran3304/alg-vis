@@ -22,31 +22,41 @@ pygame.display.set_caption('Alg-Vis')
 
 #HELPER FUNCTIONS
 def main_menu():
-    main_menu = pygame_menu.Menu(720, 1280, "Welcome", theme=pygame_menu.themes.THEME_DARK)
-    main_menu.add.button("Start", select_menu)
-    main_menu.add.button("Quit", pygame_menu.events.EXIT)
-    main_menu.mainloop(screen)
+    mainmenu = pygame_menu.Menu(720, 1280, "Home", theme=pygame_menu.themes.THEME_DARK)
+    mainmenu.add.image("Logo.svg", scale=(1.5, 1.5))
+    mainmenu.add.label("Alg-Vis", max_char=-1, font_size=100, font_color="white")
+    mainmenu.add.vertical_margin(100)
+    mainmenu.add.button("Start", select_menu, font_size=75)
+    mainmenu.add.vertical_margin(20)
+    mainmenu.add.button("Quit", pygame_menu.events.EXIT, font_size=75)
+    mainmenu.mainloop(screen)
 
 def select_menu():
-    select_menu = pygame_menu.Menu(720, 1280, "Algorithms", theme=pygame_menu.themes.THEME_DARK)
-    select_menu.add.button("Path-Finding Algorithms", pathfinding_menu)
-    select_menu.add.button("Sorting Algorithms", sorting_menu)
-    select_menu.add.button("Back", main_menu)
-    select_menu.mainloop(screen)
+    selectmenu = pygame_menu.Menu(720, 1280, "Algorithms", theme=pygame_menu.themes.THEME_DARK)
+    selectmenu.add.button("Path-Finding Algorithms", pathfinding_menu, font_size=50)
+    selectmenu.add.vertical_margin(50)
+    selectmenu.add.button("Sorting Algorithms", sorting_menu, font_size=50)
+    selectmenu.add.vertical_margin(150)
+    selectmenu.add.button("Back", main_menu, font_size=50)
+    selectmenu.mainloop(screen)
 
 def pathfinding_menu():
-    main_menu = pygame_menu.Menu(720, 1280, "Path-Finding Algorithms", theme=pygame_menu.themes.THEME_DARK)
-    main_menu.add.button("A* Search", foo)
-    main_menu.add.button("Dijkstra\'s Algorithm", foo)
-    main_menu.add.button("Back", select_menu)
-    main_menu.mainloop(screen)
+    pfmenu = pygame_menu.Menu(720, 1280, "Path-Finding Algorithms", theme=pygame_menu.themes.THEME_DARK)
+    pfmenu.add.button("A* Search", foo, font_size=50)
+    pfmenu.add.vertical_margin(50)
+    pfmenu.add.button("Dijkstra\'s Algorithm", foo, font_size=50)
+    pfmenu.add.vertical_margin(150)
+    pfmenu.add.button("Back", select_menu, font_size=50)
+    pfmenu.mainloop(screen)
     
 def sorting_menu():
-    main_menu = pygame_menu.Menu(720, 1280, "Sorting Algorithms", theme=pygame_menu.themes.THEME_DARK)
-    main_menu.add.button("Bubble Sort", foo)
-    main_menu.add.button("Merge Sort", foo)
-    main_menu.add.button("Back", select_menu)
-    main_menu.mainloop(screen)
+    smenu = pygame_menu.Menu(720, 1280, "Sorting Algorithms", theme=pygame_menu.themes.THEME_DARK)
+    smenu.add.button("Bubble Sort", foo, font_size=50)
+    smenu.add.vertical_margin(50)
+    smenu.add.button("Merge Sort", foo, font_size=50)
+    smenu.add.vertical_margin(150)
+    smenu.add.button("Back", select_menu, font_size=50)
+    smenu.mainloop(screen)
 
 def foo():
     pass
