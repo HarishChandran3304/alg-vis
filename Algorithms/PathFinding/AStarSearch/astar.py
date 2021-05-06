@@ -136,3 +136,15 @@ class Node:
 		Compares current node with another node
 		'''
 		return False
+
+
+#HELPER FUNCTIONS
+def h(node1, node2):
+    '''
+    Heuristic function [h(n)] for the algorithm
+    #Uses Manhattan-Distance [L-Distance]
+    Returns the absolute distance between the current node and the destination node
+    '''
+    x1, y1 = node1
+    x2, y2 = node2
+    return abs(x2-x1) + abs(y2-y1)
