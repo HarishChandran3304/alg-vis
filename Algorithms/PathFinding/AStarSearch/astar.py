@@ -20,7 +20,7 @@ TURQUOISE = (64, 224, 208)
 
 #CLASSES
 class Node:
-	def __init__(self, row, col, width, total_rows):
+	def __init__(self, row, col, width, totalrows):
 		self.row = row
 		self.col = col
 		self.x = row * width
@@ -28,11 +28,14 @@ class Node:
 		self.colour = WHITE
 		self.neighbors = []
 		self.width = width
-		self.total_rows = total_rows
+		self.totalrows = totalrows
 
     #CLASS METHODS
 	def getpos(self):
 		return self.row, self.col
+
+	def reset(self):
+		self.colour = WHITE
 
 	def isclosed(self):
 		return self.colour == RED
@@ -49,11 +52,8 @@ class Node:
 	def isend(self):
 		return self.colour == TURQUOISE
 
-	def reset(self):
-		self.colour = WHITE
-
-	def makestart(self):
-		self.colour = ORANGE
+	def ispath(self):
+		self.colour == PURPLE
 
 	def makeclosed(self):
 		self.colour = RED
@@ -63,6 +63,9 @@ class Node:
 
 	def makebarrier(self):
 		self.colour = BLACK
+
+	def makestart(self):
+		self.colour = ORANGE
 
 	def makeend(self):
 		self.colour = TURQUOISE
