@@ -120,3 +120,19 @@ class Node:
 		Changes the colour attribute of a node to Purple
 		'''
 		self.colour = PURPLE
+
+
+	def draw(self, surface):
+		'''
+		Draws the node on the surface, with the colour self.colour, as a square of side self.width, at self.x, self.y
+		'''
+		pygame.draw.rect(surface, self.colour, (self.x, self.y, self.width, self.width))
+
+	def updateneighbours(self, grid):
+		pass
+
+	def __lt__(self, other): #"lt" stands for lesser than
+		'''
+		Compares current node with another node
+		'''
+		return False
