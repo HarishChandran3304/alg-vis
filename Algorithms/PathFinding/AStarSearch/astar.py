@@ -2,6 +2,7 @@
 import pygame
 import pygame_menu
 import math
+from queue import PriorityQueue
 
 
 #CONSTANTS
