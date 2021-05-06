@@ -120,5 +120,3 @@ class Node:
 		Changes the colour attribute of a node to Purple
 		'''
 		self.colour = PURPLE
-
-	def draw(self, screen):
