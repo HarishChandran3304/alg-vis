@@ -148,3 +148,52 @@ def h(node1, node2):
     x1, y1 = node1
     x2, y2 = node2
     return abs(x2-x1) + abs(y2-y1)
+
+def makegrid(rows, width):
+    '''
+    Creates the grid and returns it in the form of a 2D list
+    '''
+    grid = []
+    gap = width//rows #Width of each node
+    for i in range(rows):
+        grid.append([])
+        for j in range(rows):
+            node = Node(i, j, gap, rows)
+            grid[i].append(spot)
+    
+    return grid
+
+def drawgrid(surface, rows, width):
+    '''
+    Draws the lines of the grid in grey color
+    '''
+    gap = width//rows
+    for i in range(rows):
+        pygame.draw.line(surface, GREY, (0, i*gap), (width, i*gap))
+    for j in range(rows):
+        pygame.draw.line(surface, GREY, (j*gap, 0), (j*gap, width))
+
+def draw(surface, grid, rows, width):
+    '''
+    Main draw function to draw the entire grid
+    '''
+    surface.fill(WHIE)
+    
+    for row in grid:
+        for node in row:
+            spot.draw(surface)
+    
+    drawgrid(surface, rows, width)
+    pygame.display.update()
+
+def getclickedpos(pos, rows, width):
+    '''
+    Returns the row and column of the node that was clicked on
+    '''
+    gap = width//rows
+    y, x = pos
+    
+    row = y//gap
+    col = x//gap
+    
+    return row, col
