@@ -313,11 +313,16 @@ def main(surface, width):
                 node.reset()
                 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE and not started:
+                if event.key == pygame.K_SPACE and start and end:
                     for row in grid:
                         for node in row:
                             node.updateneighbours(grid)
                         
                     algorithm(lambda: draw(surface, grid, rows, width), grid, start, end)
+                    
+                if event.key == pygame.K_r:
+                    start = None
+                    end = None
+                    grid = makegrid(rows, width)
 
 main(WIN, WIDTH)
