@@ -10,7 +10,7 @@ WIDTH = 800
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
 RED = (255, 0, 0) #Visited but close nodes
 GREEN = (0, 255, 0) #Visited and open nodes
-BLUE = (0, 255, 0)  #Path nodes
+BLUE = (0, 0, 255)  #Path nodes
 YELLOW = (255, 255, 0)
 WHITE = (255, 255, 255) #Empty nodes
 BLACK = (0, 0, 0) #Barrier nodes
@@ -84,7 +84,7 @@ class Node:
 		'''
 		Returns True if a node is a part of the path nodes, else returns False
 		'''
-		self.colour == PURPLE
+		self.colour == BLUE
 
 
 	def makeclosed(self):
@@ -119,9 +119,9 @@ class Node:
 
 	def makepath(self):
 		'''
-		Changes the colour attribute of a node to Purple
+		Changes the colour attribute of a node to Blue
 		'''
-		self.colour = PURPLE
+		self.colour = BLUE
 
 
 	def draw(self, surface):
@@ -163,6 +163,7 @@ def h(node1, node2):
     x2, y2 = node2
     return abs(x2-x1) + abs(y2-y1)
 
+
 def algorithm(draw, grid, start, end):
     count = 0
     openset = PriorityQueue()
@@ -184,6 +185,9 @@ def algorithm(draw, grid, start, end):
         opensethash.remove(current)
         
         if current == end:
+            drawpath(camefrom, end, draw)
+            end.makeend()
+            start.makestart()
             return True
         
         for neighbour in current.neighbours:
@@ -229,6 +233,12 @@ def drawgrid(surface, rows, width):
         pygame.draw.line(surface, GREY, (0, i*gap), (width, i*gap))
     for j in range(rows):
         pygame.draw.line(surface, GREY, (j*gap, 0), (j*gap, width))
+
+def drawpath(camefrom, current, draw):
+    while current in camefrom:
+        current = camefrom[current]
+        current.makepath()
+        draw()
 
 def draw(surface, grid, rows, width):
     '''
