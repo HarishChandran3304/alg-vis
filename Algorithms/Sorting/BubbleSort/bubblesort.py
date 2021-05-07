@@ -2,13 +2,6 @@
 import pygame
 import random
 
-#DEFINES COLOURS
-white = (255, 255, 255)
-black = (0, 0, 0)
-red = (255, 0, 0)
-green = (0, 255, 0)
-blue = (0, 0, 255)
-
 #MAKES IT EASY TO TRACK KEYS PRESSED
 from pygame.locals import (
     K_UP,
@@ -19,52 +12,54 @@ from pygame.locals import (
     KEYDOWN,
     QUIT,
 )
-  
+
+#DEFINES COLOURS
+white = (255, 255, 255)
+black = (0, 0, 0)
+red = (255, 0, 0)
+green = (0, 255, 0)
+blue = (0, 0, 255)
+
 pygame.init()
+
+#DISPLAYING WINDOW
+screen = pygame.display.set_mode((900, 600))
   
-# setting window size
-screen = pygame.display.set_mode((500, 400))
-  
-# setting title to the window
+#CUSTOMISING WINDOW
 pygame.display.set_caption('Bubble sort')
   
-# initial position
-x = 0
-y = 0
+#STARTING POSITIONS SO THAT EACH BAR IS IN THE CENTER
+x_of_bar = 0
+y_of_bar = 0
   
-# width of each bar
-width = 20
+# WIDTH OF EACH BAR
+width_of_bar = 20
   
-# height of each bar (data to be sorted)
+#GENERATING RANDOM HEIGHTS FOR EACH BAR
 height = []
-for height_of_each_element in range(14):
-    height.append(random.randint(20, 350))
+for i in range (30):
+    height.append(random.randint(10, 350))
   
-running = True
-  
-# method to show the list of height
+#FUNCTION TO DISPLAY ALL THE BARS FORMED
 def show(height):
   
-    # loop to iterate each item of list
     for i in range(len(height)):
   
-        # drawing each bar with respective gap
-        pygame.draw.rect(screen, blue, (x + 30 * i, y, width, height[i]))
+        #MAKING A BAR EACH OF HEIGHT DEFINED IN LIST AND WITH A DISTANCE OF 30 PIXELS
+        pygame.draw.rect(screen, blue, (x_of_bar + 30 * i, y_of_bar, width_of_bar, height[i]))
+
+running = True
   
-#KEEPS CODE RUNNING
+#MAKES SURE THE CODE KEEPS RUNNING
 while running:
-    #BLACK COLOUR BG
-    screen.fill(black)
     
+    #FLAG DEFINED TO SEE IF CORRECT KEY IS CLICKED BEFORE RUNNING
     flag = False
   
-    # time delay
-    pygame.time.delay(10)
-  
-    # getting keys pressed
+    #GETS INFO OF KEY PRESSED
     keys = pygame.key.get_pressed()
   
-    # iterating events
+    #GETS ALL EVENTS LIKE WHICH KEY IS PRESSED
     for event in pygame.event.get():
         
         #IF A KEY IS PRESSED 
@@ -78,47 +73,49 @@ while running:
         elif event.type == pygame.QUIT:
             running = False
   
-    #IF SPACEBAR IS CLICKED IT STARTS TO EXECUTE
+    #SPACEBAR IS PRESSED
     if keys[pygame.K_SPACE]:
-        # make flag flag to true
+        #MAKES FLAG TRUE SO THAT CODE CAN START RUNNING
         flag = True
   
-    # IF FLAG IS FALSE
+    #CHECKS STATUS OF CODE, HAPPENS BEFORE SPACEBAR IS CLICKED
     if flag == False:
   
-        # BLACK COULOUR BACKGROUND
-        screen.fill(black)
+        
+        screen.fill((0, 0, 0))
   
-        # call the height method to show the list items
+        #SEE THE OBJECTS FORMED
         show(height)
   
-        # UPDATE THE SCREEN
+        # update the window
         pygame.display.update()
   
-    #IF FLAG IS TRUE
+    #FLAG IS TRUE, HAPPENS AFTER SPACEBAR IS CLICKED
     else:
   
-        #START USING BUBBLE SORT
+        #USES BUBBLE SORT
         for i in range(len(height) - 1):
   
-            # after this iteration max element will come at last
-            for j in range(len(height) - i - 1):
+            for elem_height in range(len(height) - i - 1):
   
-                # starting is greater then next element
-                if height[j] > height[j + 1]:
+                #CHECKS IF FIRST ELEMENT IS GREATER THAN NEXT ELEMENT 
+                if height[elem_height] > height[elem_height + 1]:
   
-                    #SAVE AND SWAP THE VARIABLE
-                    t = height[j]
-                    height[j] = height[j + 1]
-                    height[j + 1] = t
+                    #USING TEMPORARY VARIABLE WE STORE THE HEIGHT AND LATER SWITCH IT
+                    temp_height = height[elem_height]
+                    height[elem_height] = height[elem_height + 1]
+                    height[elem_height + 1] = temp_height
   
-                #CALL LIST TO SHOW DISPLAYED ITEMS
+                # fill the window with black color
+                screen.fill((0, 0, 0))
+  
+                #MAKES SURE THAT ORIGNAL LIST IS RETAINED BY CALING FUNCTION
                 show(height)
   
-                # TIME DELAY
+                #EACH ITERATION IS RUN AFTER A BREAK OF 50 MILLISECONDS
                 pygame.time.delay(50)
   
-                # DISPLAY UPDATED
+                #CHANGES SHOULD BE REFLECTED
                 pygame.display.update()
   
 # exiting the main window
