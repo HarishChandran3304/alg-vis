@@ -10,13 +10,13 @@ WIDTH = 800
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
 RED = (255, 0, 0) #Visited but close nodes
 GREEN = (0, 255, 0) #Visited and open nodes
-BLUE = (0, 255, 0) 
+BLUE = (0, 255, 0)  #Path nodes
 YELLOW = (255, 255, 0)
 WHITE = (255, 255, 255) #Empty nodes
 BLACK = (0, 0, 0) #Barrier nodes
-PURPLE = (128, 0, 128) #Path nodes
+PURPLE = (128, 0, 128)
 ORANGE = (255, 165 ,0) #Start node
-GREY = (128, 128, 128)
+GREY = (128, 128, 128) #Grid lines
 TURQUOISE = (64, 224, 208) #Destination node
 
 
@@ -32,7 +32,7 @@ class Node:
 		self.x = row * width
 		self.y = col * width
 		self.colour = WHITE
-		self.neighbors = []
+		self.neighbours = []
 		self.width = width
 		self.totalrows = totalrows
 
@@ -133,16 +133,16 @@ class Node:
 	def updateneighbours(self, grid):
 		self.neighbours = []
 		if self.row < self.totalrows-1 and not grid[self.row+1][self.col].isbarrier(): #Below Neighbour
-			self.neighbors.append(grid[self.row+1][self.col])
+			self.neighbours.append(grid[self.row+1][self.col])
 
 		if self.row > 0 and not grid[self.row-1][self.col].isbarrier(): #Above Neighbour
-			self.neighbors.append(grid[self.row-1][self.col])
+			self.neighbours.append(grid[self.row-1][self.col])
 
 		if self.col < self.totalrows-1 and not grid[self.row][self.col+1].isbarrier(): #Right Neighbour
-			self.neighbors.append(grid[self.row][self.col+1])
+			self.neighbours.append(grid[self.row][self.col+1])
 
 		if self.col > 0 and not grid[self.row][self.col-1].isbarrier(): #Left Neighbour
-			self.neighbors.append(grid[self.row][self.col-1])
+			self.neighbours.append(grid[self.row][self.col-1])
 
 	def __lt__(self, other): #"lt" stands for lesser than
 		'''
@@ -162,6 +162,49 @@ def h(node1, node2):
     x1, y1 = node1
     x2, y2 = node2
     return abs(x2-x1) + abs(y2-y1)
+
+def algorithm(draw, grid, start, end):
+    count = 0
+    openset = PriorityQueue()
+    openset.put((0, count, start))
+    camefrom = {}
+    gscore = {node: float("inf") for row in grid for node in row}
+    gscore[start] = 0
+    fscore = {node: float("inf") for row in grid for node in row}
+    fscore[start] = h(start.getpos(), end.getpos())
+    
+    opensethash = {start}
+    
+    while not openset.empty():
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+        
+        current = openset.get()[2]
+        opensethash.remove(current)
+        
+        if current == end:
+            return True
+        
+        for neighbour in current.neighbours:
+            tempgscore = gscore[current]+1
+            
+            if tempgscore < gscore[neighbour]:
+                camefrom[neighbour] = current
+                gscore[neighbour] = tempgscore
+                fscore[neighbour] = tempgscore + h(neighbour.getpos(), end.getpos())
+                if neighbour not in opensethash:
+                    count += 1
+                    openset.put((fscore[neighbour], count, neighbour))
+                    opensethash.add(neighbour)
+                    neighbour.makeopen()
+        
+        draw()
+        
+        if current != start:
+            current.makeclosed()
+        
+    return False
 
 def makegrid(rows, width):
     '''
@@ -258,7 +301,13 @@ def main(surface, width):
                     end = None
                 
                 node.reset()
-			
-    pygame.quit()
+                
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE and not started:
+                    for row in grid:
+                        for node in row:
+                            node.updateneighbours(grid)
+                        
+                    algorithm(lambda: draw(surface, grid, rows, width), grid, start, end)
 
 main(WIN, WIDTH)
