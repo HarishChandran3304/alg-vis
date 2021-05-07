@@ -1,5 +1,5 @@
 #IMPORTS
-import pygame
+from pygame import *
 import pygame_menu
 import math
 from queue import PriorityQueue
@@ -126,7 +126,7 @@ class Node:
 		'''
 		Draws the node on the surface, with the colour self.colour, as a square of side self.width, at self.x, self.y
 		'''
-		pygame.draw.rect(surface, self.colour, (self.x, self.y, self.width, self.width))
+		draw.rect(surface, self.colour, (self.x, self.y, self.width, self.width))
 
 	def updateneighbours(self, grid):
 		pass
