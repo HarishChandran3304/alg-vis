@@ -131,13 +131,25 @@ class Node:
 		pygame.draw.rect(surface, self.colour, (self.x, self.y, self.width, self.width))
 
 	def updateneighbours(self, grid):
-		pass
+		self.neighbours = []
+		if self.row < self.totalrows-1 and not grid[self.row+1][self.col].isbarrier(): #Below Neighbour
+			self.neighbors.append(grid[self.row+1][self.col])
+
+		if self.row > 0 and not grid[self.row-1][self.col].isbarrier(): #Above Neighbour
+			self.neighbors.append(grid[self.row-1][self.col])
+
+		if self.col < self.totalrows-1 and not grid[self.row][self.col+1].isbarrier(): #Right Neighbour
+			self.neighbors.append(grid[self.row][self.col+1])
+
+		if self.col > 0 and not grid[self.row][self.col-1].isbarrier(): #Left Neighbour
+			self.neighbors.append(grid[self.row][self.col-1])
 
 	def __lt__(self, other): #"lt" stands for lesser than
 		'''
 		Compares current node with another node
 		'''
 		return False
+
 
 
 #HELPER FUNCTIONS
