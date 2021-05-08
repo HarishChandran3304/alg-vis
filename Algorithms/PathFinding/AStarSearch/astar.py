@@ -1,13 +1,11 @@
 #IMPORTS
 import pygame
-import pygame_menu
-import math
 from queue import PriorityQueue
 
 
 #CONSTANTS
-WIDTH = 800
-WIN = pygame.display.set_mode((WIDTH, WIDTH))
+SCREEN_WIDTH = 1280
+SCREEN_HEIGHT = 720
 RED = (255, 0, 0) #Visited but close nodes
 GREEN = (0, 255, 0) #Visited and open nodes
 BLUE = (0, 0, 255)  #Path nodes
@@ -17,7 +15,15 @@ BLACK = (0, 0, 0) #Barrier nodes
 PURPLE = (128, 0, 128)
 ORANGE = (255, 165 ,0) #Start node
 GREY = (128, 128, 128) #Grid lines
-TURQUOISE = (64, 224, 208) #Destination node
+TURQUOISE = (64, 224, 208) #Destination node#SETUP
+
+
+#SETUP
+pygame.init()
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+icon = pygame.image.load("Logo.svg")
+pygame.display.set_icon(icon)
+pygame.display.set_caption('Alg-Vis')
 
 
 #CLASSES
@@ -244,7 +250,7 @@ def draw(surface, grid, rows, width):
     '''
     Main draw function to draw the entire grid
     '''
-    surface.fill(WHITE)
+    pygame.draw.rect(surface, WHITE, pygame.Rect(0, 0, 800, 800))
     
     for row in grid:
         for node in row:
@@ -265,6 +271,8 @@ def getclickedpos(pos, rows, width):
     
     return row, col
 
+
+#MAIN
 def main(surface, width):
     rows = 50 
     grid = makegrid(rows, width)
@@ -274,7 +282,9 @@ def main(surface, width):
     
     run = True
     while run:
+        pygame.draw.rect(screen, (40, 41, 35), pygame.Rect(800, 0, 480, 720))
         draw(surface, grid, rows, width)
+        pygame.draw.rect(screen, (40, 41, 35), pygame.Rect(800, 0, 480, 720))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -328,6 +338,10 @@ def main(surface, width):
                     start = None
                     end = None
                     grid = makegrid(rows, width)
+    
     pygame.quit()
 
-main(WIN, WIDTH)
+
+#MAIN CALL
+if __name__ == "__main__":
+    main(screen, 800)
