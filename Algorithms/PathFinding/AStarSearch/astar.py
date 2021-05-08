@@ -273,15 +273,11 @@ def main(surface, width):
     end = None
     
     run = True
-    started = False
     while run:
         draw(surface, grid, rows, width)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-            
-            if started:
-                continue
             
             if pygame.mouse.get_pressed()[0]: #Left mouse button
                 pos = pygame.mouse.get_pos()
