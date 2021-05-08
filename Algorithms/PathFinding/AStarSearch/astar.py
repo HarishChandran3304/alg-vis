@@ -298,6 +298,10 @@ def main(surface, width):
                 
                 elif node!=start and node!=end:
                     node.makebarrier()
+                    for row in grid:
+                        for node in row:
+                            if node.colour == RED or node.colour == GREEN or node.colour == BLUE:
+                                node.reset()
             
             elif pygame.mouse.get_pressed()[2]: #Right mouse button
                 pos = pygame.mouse.get_pos()
@@ -314,6 +318,10 @@ def main(surface, width):
                 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and start and end:
+                    for row in grid:
+                        for node in row:
+                            if node.colour == RED or node.colour == GREEN or node.colour == BLUE:
+                                node.reset()
                     for row in grid:
                         for node in row:
                             node.updateneighbours(grid)
