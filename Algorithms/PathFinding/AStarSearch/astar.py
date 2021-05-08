@@ -332,5 +332,6 @@ def main(surface, width):
                     start = None
                     end = None
                     grid = makegrid(rows, width)
+    pygame.quit()
 
 main(WIN, WIDTH)
