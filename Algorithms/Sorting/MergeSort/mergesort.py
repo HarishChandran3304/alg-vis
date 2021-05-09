@@ -49,7 +49,7 @@ def display_message():
     txt2 = font.render('"R" FOR NEW ARRAY', 1, white)
     screen.blit(txt2, (20, 40))
 
-    txt3 = font.render('ALGORITHM USED: "BUBBLE SORT"', 1, white)
+    txt3 = font.render('ALGORITHM USED: "MERGE SORT"', 1, white)
     screen.blit(txt3, (500, 30))
 
 
@@ -69,6 +69,7 @@ def making_bars():
         all_colours[i] = colours[-1]
         height[i] = random.randrange(1, 90)
 
+
 #MAKES THE BARS SO THAT THEY CAN BE USED LATER ON
 making_bars()
 
@@ -76,18 +77,21 @@ making_bars()
 #FUNCTION TO DISPLAY THE BARS ON THE SCREEN
 def displaying_bars():
 
-    element_width =(width-100)//100
+    #DETERMINES THE WIDTH OF EACH BAR
+    width_of_bar =(width-100)//100
 
     #GIVES UNIFORM DISTANCE OF 900 / 50 UNITS BEHIND EACH BAR, 900 WAS CHOSEN BECAUSE IT IS THE LENGTH OF THE SCREEN
     distance_of_each_bar = 900 / 50
 
-    boundry_grp = 500 / 100
+    #DETERMINES THE LENTH TILL WHERE THE BAR WILL REACH
+    boundry_of_bars = 500 / 100
       
-    # Drawing the array values as lines
+    #DISPLAYS THE BARS ON THE SCREEN
     for i in range(1, 70):
-        pygame.draw.line(screen, all_colours[i], (distance_of_each_bar * i-3, 100), (distance_of_each_bar * i-3, height[i]*boundry_grp + 100), element_width)
+        pygame.draw.line(screen, all_colours[i], (distance_of_each_bar * i, 100), (distance_of_each_bar * i, height[i]*boundry_of_bars + 100), width_of_bar)
 
-#EXECUTED AFTER EACH ITERATION AND USED TO CHANGE THE COLOUR
+
+#AFTER COMPARING TWO LINES THIS IS USED
 def refresh():
 
     screen.fill(black)
