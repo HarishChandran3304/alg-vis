@@ -78,7 +78,8 @@ making_bars()
 #FUNCTION TO DISPLAY THE BARS ON THE SCREEN
 def display_bars():
 
-    screen.fill(black)
+    screen.fill(black)       
+    display_message()
     #DETERMINES THE WIDTH OF EACH BAR
     width_of_bar =(width-100)//100
 
@@ -95,8 +96,6 @@ def display_bars():
 #AFTER COMPARING TWO LINES THIS IS USED
 def refresh():
 
-    
-    display_message()
     display_bars()
     pygame.time.delay(25)
     pygame.display.update()
@@ -106,6 +105,10 @@ def sort():
     for i in range(len(height)-1):
 
         for elem_height in range(len(height) - i - 1):
+            
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
             
             
             #COLOUR CHANGES TO RED WHILE COMPARING
@@ -160,8 +163,7 @@ while running:
             elif event.key == K_ESCAPE:
                 running = False
 
-    display_bars()       
-    display_message()
+    display_bars()
     
     pygame.display.update()
 
