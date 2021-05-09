@@ -107,8 +107,16 @@ def sort():
         for elem_height in range(len(height) - i - 1):
             
             for event in pygame.event.get():
+
                 if event.type == pygame.QUIT:
+
                     pygame.quit()
+
+                elif event.type == pygame.KEYDOWN:
+
+                    if event.key == K_ESCAPE:
+
+                        pygame.quit()
             
             
             #COLOUR CHANGES TO RED WHILE COMPARING

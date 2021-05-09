@@ -174,6 +174,18 @@ def merge(height, x1, y1, x2, y2):
 
 #ALGORITHIM FOR MERGE SORT
 def mergesort(height, l, r):
+    
+    for event in pygame.event.get():
+
+                if event.type == pygame.QUIT:
+
+                    pygame.quit()
+
+                elif event.type == pygame.KEYDOWN:
+
+                    if event.key == K_ESCAPE:
+
+                        pygame.quit()
 
     mid =(l + r)//2
 
