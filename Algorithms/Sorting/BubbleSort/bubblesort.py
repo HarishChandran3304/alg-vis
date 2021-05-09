@@ -1,4 +1,4 @@
-# importing pygame
+#IMPORTING PYGAME
 import pygame
 import random
 
@@ -11,6 +11,8 @@ from pygame.locals import (
     K_ESCAPE,
     KEYDOWN,
     QUIT,
+    K_SPACE,
+    K_r
 )
 
 #DEFINES COLOURS
@@ -18,105 +20,149 @@ white = (255, 255, 255)
 black = (0, 0, 0)
 red = (255, 0, 0)
 green = (0, 255, 0)
-blue = (0, 0, 255)
+blue = (0,100,255)
+orange = (255, 165, 0)
 
-pygame.init()
+pygame.font.init()
+
+
+#OTHER VARIABLES
+# Window size
+width = 1250
+length = 600
+#DEFINING FONTS TO DISPLAY TEXT
+font = pygame.font.SysFont('times new roman', 20)
+
 
 #DISPLAYING WINDOW
-screen = pygame.display.set_mode((900, 600))
-  
-#CUSTOMISING WINDOW
+screen = pygame.display.set_mode((width, length))
 pygame.display.set_caption('Bubble sort')
-  
-#STARTING POSITIONS SO THAT EACH BAR IS IN THE CENTER
-x_of_bar = 0
-y_of_bar = 0
-  
-# WIDTH OF EACH BAR
-width_of_bar = 20
-  
-#GENERATING RANDOM HEIGHTS FOR EACH BAR
-height = []
-for i in range (30):
-    height.append(random.randint(10, 350))
-  
-#FUNCTION TO DISPLAY ALL THE BARS FORMED
-def show(height):
-  
+
+
+#USED TO DISPLAY TEXT ON THE SCREEN
+def display_message():
+
+    #TEXT MESSAGE
+    txt1 = font.render('"SPACE" TO SORT', 1, white)
+    #POSITION OF TEXT
+    screen.blit(txt1, (20, 20))
+    
+    txt2 = font.render('"R" FOR NEW ARRAY', 1, white)
+    screen.blit(txt2, (20, 40))
+
+    txt3 = font.render('ALGORITHM USED: "BUBBLE SORT"', 1, white)
+    screen.blit(txt3, (500, 30))
+
+
+#ARRAY OF LENGTH 100 IS FORMED SIGNIFYING 100 BARS
+height =[0]*70
+all_colours =[green]*70
+clr_ind = 0
+colours =[orange, red, green, blue]
+
+#FUNCTION REQUIRED TO CALL IT EACH TIME "R" IS PRESSED AND GENERATE AND A NEW ARRAY
+def making_bars():
+
+    #LOOP TO RANDOMLY GENERATE THE HEIGHT OF EACH BAR
+    for i in range(1, 70):
+        
+        #SETS THE DEFAULT COULOUR OF EACH BAR TO BLUE
+        all_colours[i] = colours[-1]
+        height[i] = random.randrange(1, 90)
+
+
+#MAKES THE BARS SO THAT THEY CAN BE USED LATER ON
+making_bars()
+
+
+#FUNCTION TO DISPLAY THE BARS ON THE SCREEN
+def display_bars():
+
+    screen.fill(black)
+    #DETERMINES THE WIDTH OF EACH BAR
+    width_of_bar =(width-100)//100
+
+    #GIVES UNIFORM DISTANCE OF 900 / 50 UNITS BEHIND EACH BAR, 900 WAS CHOSEN BECAUSE IT IS THE LENGTH OF THE SCREEN
+    distance_of_each_bar = 900 / 50
+
+    #DETERMINES THE LENTH TILL WHERE THE BAR WILL REACH
+    boundry_of_bars = 500 / 100
+      
+    # Drawing the array values as lines
+    for i in range(1, 70):
+        pygame.draw.line(screen, all_colours[i], (distance_of_each_bar * i-3, 100), (distance_of_each_bar * i-3, height[i]*boundry_of_bars + 100), width_of_bar)
+
+#AFTER COMPARING TWO LINES THIS IS USED
+def refresh():
+
+    
+    display_message()
+    display_bars()
+    pygame.time.delay(25)
+    pygame.display.update()
+
+def sort():
+
+    for i in range(len(height)-1):
+
+        for elem_height in range(len(height) - i - 1):
+            
+            
+            #COLOUR CHANGES TO RED WHILE COMPARING
+
+            all_colours[elem_height] = colours[1]
+            all_colours[elem_height+1] = colours[1]
+
+            #pygame.time.delay(25)
+
+            #IF THE ELEMENT ON THE LEFT ON THE LEFT IS GREATER IT GETS SWITCHED TO THE RIGHT
+            if height[elem_height] > height[elem_height + 1]:
+                
+                #COLOUR CHANGES TO GREEN WHILE SWITCHING
+                all_colours[elem_height] = colours[2]
+                all_colours[elem_height+1] = colours[2]
+
+                #USING TEMPORARY VARIABLE WE STORE THE HEIGHT AND LATER SWITCH IT
+                
+                temp_height = height[elem_height]
+                height[elem_height] = height[elem_height + 1]
+                height[elem_height + 1] = temp_height
+                refresh()
+
+            #COLOURS SET TO ORANGE INDICATING THEY HAVE BEEN TRAVERSED THROUGH
+            all_colours[elem_height] = colours[0]
+            all_colours[elem_height+1] = colours[0]
+
     for i in range(len(height)):
-  
-        #MAKING A BAR EACH OF HEIGHT DEFINED IN LIST AND WITH A DISTANCE OF 30 PIXELS
-        pygame.draw.rect(screen, blue, (x_of_bar + 30 * i, y_of_bar, width_of_bar, height[i]))
+        all_colours[i] = colours[-1]
+        
+    
+    
+
 
 running = True
-  
-#MAKES SURE THE CODE KEEPS RUNNING
 while running:
-    
-    #FLAG DEFINED TO SEE IF CORRECT KEY IS CLICKED BEFORE RUNNING
-    flag = False
-  
-    #GETS INFO OF KEY PRESSED
-    keys = pygame.key.get_pressed()
-  
-    #GETS ALL EVENTS LIKE WHICH KEY IS PRESSED
+
     for event in pygame.event.get():
-        
-        #IF A KEY IS PRESSED 
-        if event.type == KEYDOWN:
-            
-            #IF ESCAPE KEY IS PRESSED THEN IT QUITS THE PROGRAM
-            if event.key == K_ESCAPE:
-                running = False
-        
-        #IF THE CROSS IS CLICKED IT QUITS IT
-        elif event.type == pygame.QUIT:
+
+        if event.type == pygame.QUIT:
+
             running = False
-  
-    #SPACEBAR IS PRESSED
-    if keys[pygame.K_SPACE]:
-        #MAKES FLAG TRUE SO THAT CODE CAN START RUNNING
-        flag = True
-  
-    #CHECKS STATUS OF CODE, HAPPENS BEFORE SPACEBAR IS CLICKED
-    if flag == False:
-  
         
-        screen.fill((0, 0, 0))
-  
-        #SEE THE OBJECTS FORMED
-        show(height)
-  
-        # update the window
-        pygame.display.update()
-  
-    #FLAG IS TRUE, HAPPENS AFTER SPACEBAR IS CLICKED
-    else:
-  
-        #USES BUBBLE SORT
-        for i in range(len(height) - 1):
-  
-            for elem_height in range(len(height) - i - 1):
-  
-                #CHECKS IF FIRST ELEMENT IS GREATER THAN NEXT ELEMENT 
-                if height[elem_height] > height[elem_height + 1]:
-  
-                    #USING TEMPORARY VARIABLE WE STORE THE HEIGHT AND LATER SWITCH IT
-                    temp_height = height[elem_height]
-                    height[elem_height] = height[elem_height + 1]
-                    height[elem_height + 1] = temp_height
-  
-                # fill the window with black color
-                screen.fill((0, 0, 0))
-  
-                #MAKES SURE THAT ORIGNAL LIST IS RETAINED BY CALING FUNCTION
-                show(height)
-  
-                #EACH ITERATION IS RUN AFTER A BREAK OF 50 MILLISECONDS
-                pygame.time.delay(50)
-  
-                #CHANGES SHOULD BE REFLECTED
-                pygame.display.update()
-  
-# exiting the main window
+        elif event.type == pygame.KEYDOWN:
+
+            if event.key == K_SPACE:
+                sort()
+            
+            elif event.key == K_r:
+                making_bars()
+            
+            elif event.key == K_ESCAPE:
+                running = False
+
+    display_bars()       
+    display_message()
+    
+    pygame.display.update()
+
 pygame.quit()
