@@ -27,71 +27,71 @@ pygame.font.init()
 
 #OTHER VARIABLES
 # Window size
-width = 900
+width = 1250
 length = 600
 #DEFINING FONTS TO DISPLAY TEXT
-larger_font = pygame.font.SysFont('times new roman', 20)
-smaller_font = pygame.font.SysFont('times new roman', 15)
+font = pygame.font.SysFont('times new roman', 20)
 
 
 #DISPLAYING WINDOW
-screen = pygame.display.set_mode((900, 600))
-
-
-#CUSTOMISING WINDOW
+screen = pygame.display.set_mode((width, length))
 pygame.display.set_caption('Merge sort')
 
 
-#151 BARS ARE GENERATED
-height =[0]*151
-all_colours =[green]*151
+#USED TO DISPLAY TEXT ON THE SCREEN
+def display_message():
+
+    #TEXT MESSAGE
+    txt1 = font.render('"SPACE" TO SORT', 1, white)
+    #POSITION OF TEXT
+    screen.blit(txt1, (20, 20))
+    
+    txt2 = font.render('"R" FOR NEW ARRAY', 1, white)
+    screen.blit(txt2, (20, 40))
+
+    txt3 = font.render('ALGORITHM USED: "BUBBLE SORT"', 1, white)
+    screen.blit(txt3, (500, 30))
+
+
+#ARRAY OF LENGTH 100 IS FORMED SIGNIFYING 100 BARS
+height =[0]*70
+all_colours =[green]*70
 clr_ind = 0
 colours =[orange, red, green, blue]
 
-
-#MAKES ALL THE BARS
-def make_bar():
+#FUNCTION REQUIRED TO CALL IT EACH TIME "R" IS PRESSED AND GENERATE AND A NEW ARRAY
+def making_bars():
 
     #LOOP TO RANDOMLY GENERATE THE HEIGHT OF EACH BAR
-    for i in range(1, 151):
+    for i in range(1, 70):
         
         #SETS THE DEFAULT COULOUR OF EACH BAR TO BLUE
         all_colours[i] = colours[-1]
         height[i] = random.randrange(1, 90)
 
-#MAKES THE LIST OF BARS
-make_bar() 
+#MAKES THE BARS SO THAT THEY CAN BE USED LATER ON
+making_bars()
 
-# Draw the array values
-def display_text():
-
-    #MAKING A DISPLAY OF TEXT
-    txt1 = larger_font.render('"SPACE" TO SORT', 1, white)
-    #POSITION OF TEXT
-    screen.blit(txt1, (20, 20))
-    
-    txt2 = larger_font.render('"R" FOR NEW ARRAY', 1, white)
-    screen.blit(txt2, (20, 40))
-
-    txt3 = smaller_font.render('ALGORITHM USED: "MERGE SORT"', 1, white)
-    screen.blit(txt3, (600, 60))
 
 #FUNCTION TO DISPLAY THE BARS ON THE SCREEN
 def displaying_bars():
 
-    element_width =(width-150)//150
-    boundry_arr = 900 / 150
-    boundry_grp = 550 / 100
+    element_width =(width-100)//100
+
+    #GIVES UNIFORM DISTANCE OF 900 / 50 UNITS BEHIND EACH BAR, 900 WAS CHOSEN BECAUSE IT IS THE LENGTH OF THE SCREEN
+    distance_of_each_bar = 900 / 50
+
+    boundry_grp = 500 / 100
       
     # Drawing the array values as lines
-    for i in range(1, 151):
-        pygame.draw.line(screen, all_colours[i], (boundry_arr * i-3, 100), (boundry_arr * i-3, height[i]*boundry_grp + 100), element_width)
+    for i in range(1, 70):
+        pygame.draw.line(screen, all_colours[i], (distance_of_each_bar * i-3, 100), (distance_of_each_bar * i-3, height[i]*boundry_grp + 100), element_width)
 
 #EXECUTED AFTER EACH ITERATION AND USED TO CHANGE THE COLOUR
 def refresh():
 
     screen.fill(black)
-    display_text()
+    display_message()
     displaying_bars()
     pygame.time.delay(25)
     pygame.display.update()
@@ -199,7 +199,7 @@ while running:
         if event.type == pygame.KEYDOWN:
 
             if event.key == pygame.K_r:
-                make_bar() 
+                making_bars() 
 
             elif event.key == K_SPACE:
                 mergesort(height, 1, len(height)-1)
@@ -208,7 +208,7 @@ while running:
             elif event.key == K_ESCAPE:
                 running = False
     
-    display_text()
+    display_message()
     displaying_bars()
 
     pygame.display.update()
