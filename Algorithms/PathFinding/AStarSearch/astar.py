@@ -292,35 +292,42 @@ def main(surface, width):
             if pygame.mouse.get_pressed()[0]: #Left mouse button
                 pos = pygame.mouse.get_pos()
                 row, col = getclickedpos(pos, rows, width)
-                node = grid[row][col]
-                
-                if not start and node!=end:
-                    start = node
-                    start.makestart()
-                
-                elif not end and node!=start:
-                    end = node
-                    end.makeend()
-                
-                elif node!=start and node!=end:
-                    node.makebarrier()
-                    for row in grid:
-                        for node in row:
-                            if node.colour == RED or node.colour == GREEN or node.colour == BLUE:
-                                node.reset()
+                try:
+                    node = grid[row][col]
+                    
+                    if not start and node!=end:
+                        start = node
+                        start.makestart()
+                    
+                    elif not end and node!=start:
+                        end = node
+                        end.makeend()
+                    
+                    elif node!=start and node!=end:
+                        node.makebarrier()
+                        for row in grid:
+                            for node in row:
+                                if node.colour == RED or node.colour == GREEN or node.colour == BLUE:
+                                    node.reset()
+                except:
+                    pass
             
             elif pygame.mouse.get_pressed()[2]: #Right mouse button
                 pos = pygame.mouse.get_pos()
                 row, col = getclickedpos(pos, rows, width)
-                node = grid[row][col]
+                try:
+                    node = grid[row][col]
+                    
+                    if node == start:
+                        start = None
+                    
+                    elif node == end:
+                        end = None
+                    
+                    node.reset()
                 
-                if node == start:
-                    start = None
-                
-                elif node == end:
-                    end = None
-                
-                node.reset()
+                except:
+                    pass
                 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and start and end:
