@@ -250,7 +250,7 @@ def draw(surface, grid, rows, width):
     '''
     Main draw function to draw the entire grid
     '''
-    pygame.draw.rect(surface, WHITE, pygame.Rect(0, 0, 800, 800))
+    pygame.draw.rect(surface, WHITE, pygame.Rect(0, 0, width, width))
     
     for row in grid:
         for node in row:
@@ -274,7 +274,7 @@ def getclickedpos(pos, rows, width):
 
 #MAIN
 def main(surface, width):
-    rows = 50 
+    rows = 36 
     grid = makegrid(rows, width)
     
     start = None 
@@ -282,9 +282,8 @@ def main(surface, width):
     
     run = True
     while run:
-        pygame.draw.rect(screen, (40, 41, 35), pygame.Rect(800, 0, 480, 720))
         draw(surface, grid, rows, width)
-        pygame.draw.rect(screen, (40, 41, 35), pygame.Rect(800, 0, 480, 720))
+        pygame.draw.rect(screen, (40, 41, 35), pygame.Rect(720, 0, 560, 720))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -351,4 +350,4 @@ def main(surface, width):
 
 #MAIN CALL
 if __name__ == "__main__":
-    main(screen, 800)
+    main(screen, 720)
