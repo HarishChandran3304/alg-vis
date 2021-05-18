@@ -157,7 +157,7 @@ class Node:
 		return False
 
 class button():
-    def __init__(self, color, x,y,width,height, text=''):
+    def __init__(self, color, x, y, width, height, text=''):
         self.color = color
         self.x = x
         self.y = y
@@ -184,6 +184,9 @@ class button():
                 return True
             
         return False
+
+#BUTTON CLASS INSTANCES
+randombutton = button((0, 255, 0), 150, 225, 250, 100, "Click Me!")
 
 
 #HELPER FUNCTIONS
@@ -310,8 +313,10 @@ def main(surface, width):
     
     run = True
     while run:
-        draw(surface, grid, rows, width)
-        pygame.draw.rect(screen, (40, 41, 35), pygame.Rect(720, 0, 560, 720))
+        randombutton.draw(screen)
+        pygame.display.update()
+        #draw(surface, grid, rows, width)
+        #pygame.draw.rect(screen, (40, 41, 35), pygame.Rect(720, 0, 560, 720))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
