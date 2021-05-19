@@ -156,29 +156,36 @@ class Node:
 		'''
 		return False
 
-class button():
-    def __init__(self, color, x, y, width, height, text=''):
+class Button():
+    def __init__(self, color, x, y, width, height, text="", font="verdana", fontsize=50, fontcolour=(0,0,0)):
         self.color = color
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.text = text
-
+        self.font = font
+        self.fontsize = fontsize
+        self.fontcolour = fontcolour
+        
     def draw(self,win,outline=None):
-        #Call this method to draw the button on the screen
+        '''
+        Draw the button on the screen
+        '''
         if outline:
             pygame.draw.rect(win, outline, (self.x-2,self.y-2,self.width+4,self.height+4),0)
             
         pygame.draw.rect(win, self.color, (self.x,self.y,self.width,self.height),0)
         
         if self.text != '':
-            font = pygame.font.SysFont('comicsans', 60)
-            text = font.render(self.text, 1, (0,0,0))
+            font = pygame.font.SysFont(self.font, self.fontsize)
+            text = font.render(self.text, 1, self.fontcolour)
             win.blit(text, (self.x + (self.width/2 - text.get_width()/2), self.y + (self.height/2 - text.get_height()/2)))
 
-    def isOver(self, pos):
-        #Pos is the mouse position or a tuple of (x,y) coordinates
+    def isclicked(self, pos):
+        '''
+        Returns True if the x, y coordinates entered happens to fall on the button
+        '''
         if pos[0] > self.x and pos[0] < self.x + self.width:
             if pos[1] > self.y and pos[1] < self.y + self.height:
                 return True
@@ -186,7 +193,7 @@ class button():
         return False
 
 #BUTTON CLASS INSTANCES
-randombutton = button((0, 255, 0), 150, 225, 250, 100, "Click Me!")
+visualizebtn = Button((88, 101, 242), 875, 600, 250, 100, "Visualize")
 
 
 #HELPER FUNCTIONS
@@ -313,18 +320,18 @@ def main(surface, width):
     
     run = True
     while run:
-        randombutton.draw(screen)
+        draw(surface, grid, rows, width)
+        pygame.draw.rect(screen, (40, 41, 35), pygame.Rect(720, 0, 560, 720))
+        visualizebtn.draw(screen)
         pygame.display.update()
-        #draw(surface, grid, rows, width)
-        #pygame.draw.rect(screen, (40, 41, 35), pygame.Rect(720, 0, 560, 720))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
             
             if pygame.mouse.get_pressed()[0]: #Left mouse button
                 pos = pygame.mouse.get_pos()
-                row, col = getclickedpos(pos, rows, width)
-                try:
+                if pos[0] < 720:
+                    row, col = getclickedpos(pos, rows, width)
                     node = grid[row][col]
                     
                     if not start and node!=end:
@@ -341,8 +348,18 @@ def main(surface, width):
                             for node in row:
                                 if node.colour == RED or node.colour == GREEN or node.colour == BLUE:
                                     node.reset()
-                except:
-                    pass
+                else:
+                    if visualizebtn.isclicked(pos) and start and end:
+                        for row in grid:
+                            for node in row:
+                                if node.colour == RED or node.colour == GREEN or node.colour == BLUE:
+                                    node.reset()
+                        for row in grid:
+                            for node in row:
+                                node.updateneighbours(grid)
+                            
+                        algorithm(lambda: draw(surface, grid, rows, width), grid, start, end)
+                         
             
             elif pygame.mouse.get_pressed()[2]: #Right mouse button
                 pos = pygame.mouse.get_pos()
