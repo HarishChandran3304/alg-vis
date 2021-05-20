@@ -20,6 +20,8 @@ THEMEGREY = (40, 41, 35) #Theme primary
 THEMEPURPLE = (71, 63, 255) #Theme secondary
 BTNDARK = (71, 63, 255) #Button normal colour
 BTNLIGHT = (86, 99, 233) #Button hover colour
+STATERED = (198, 10, 9) #Status red colour
+STATEGREEN = (142, 200, 19) #Status green colour
 
 
 #SETUP
@@ -64,7 +66,7 @@ class Node:
 		'''
 		Returns True if a node has been visited but is closed, else returns False
 		'''
-		return self.colour == RED
+		return self.colour == YELLOW
 
 	def isopen(self):
 		'''
@@ -99,9 +101,9 @@ class Node:
 
 	def makeclosed(self):
 		'''
-		Changes the colour attribute of a node to Red
+		Changes the colour attribute of a node to Yellow
 		'''
-		self.colour = RED
+		self.colour = YELLOW
 
 	def makeopen(self):
 		'''
@@ -155,8 +157,8 @@ class Node:
 			self.neighbours.append(grid[self.row][self.col-1])
 
 class Button():
-    def __init__(self, color, x, y, width, height, text="", font="verdana", fontsize=50, fontcolour=(0,0,0)):
-        self.color = color
+    def __init__(self, colour, x, y, width, height, text="", font="verdana", fontsize=50, fontcolour=(0,0,0)):
+        self.colour = colour
         self.x = x
         self.y = y
         self.width = width
@@ -166,14 +168,14 @@ class Button():
         self.fontsize = fontsize
         self.fontcolour = fontcolour
         
-    def draw(self, surface, outline=None):
+    def draw(self, surface, outlinecolour=None):
         '''
         Draw the button on the screen
         '''
-        if outline:
-            pygame.draw.rect(surface, outline, (self.x-2,self.y-2,self.width+4,self.height+4),0)
+        if outlinecolour:
+            pygame.draw.rect(surface, outlinecolour, (self.x-2,self.y-2,self.width+4,self.height+4), 0)
             
-        pygame.draw.rect(surface, self.color, (self.x,self.y,self.width,self.height),0)
+        pygame.draw.rect(surface, self.colour, (self.x,self.y,self.width,self.height), 0)
         
         if self.text != '':
             font = pygame.font.SysFont(self.font, self.fontsize)
@@ -191,7 +193,7 @@ class Button():
         return False
 
 #BUTTON CLASS INSTANCES
-visualizebtn = Button((BTNDARK), 875, 600, 250, 100, "Visualize")
+visualizebtn = Button(STATERED, 875, 600, 250, 100, "Visualize")
 
 
 #HELPER FUNCTIONS
@@ -329,9 +331,13 @@ def main(surface, width):
     
     run = True
     while run:
+        if start and end:
+            visualizebtn.colour = STATEGREEN
+        else:
+            visualizebtn.colour = STATERED
         draw(surface, grid, rows, width)
         pygame.draw.rect(screen, THEMEGREY, pygame.Rect(720, 0, 560, 720))
-        visualizebtn.draw(screen)
+        visualizebtn.draw(screen, THEMEPURPLE)
         status(screen, state, statecolour)
         pygame.display.update()
         for event in pygame.event.get():
@@ -368,7 +374,7 @@ def main(surface, width):
                         node.makebarrier()
                         for row in grid:
                             for node in row:
-                                if node.colour == RED or node.colour == GREEN or node.colour == BLUE:
+                                if node.colour == YELLOW or node.colour == GREEN or node.colour == BLUE:
                                     node.reset()
                                     state = "Ready to visualize!"
                                     statecolour = (142, 200, 19)
@@ -378,20 +384,34 @@ def main(surface, width):
                         state = "Visualizing..."
                         statecolour = (255, 218, 66)
                         pygame.draw.rect(screen, THEMEGREY, pygame.Rect(720, 0, 560, 720))
-                        visualizebtn.draw(screen)
+                        visualizebtn.color = statecolour
+                        visualizebtn.draw(screen, THEMEPURPLE)
                         status(screen, state, statecolour)
                         pygame.display.update()
                         for row in grid:
                             for node in row:
-                                if node.colour == RED or node.colour == GREEN or node.colour == BLUE:
+                                if node.colour == YELLOW or node.colour == GREEN or node.colour == BLUE:
                                     node.reset()
                         for row in grid:
                             for node in row:
                                 node.updateneighbours(grid)
                             
-                        algorithm(lambda: draw(surface, grid, rows, width), grid, start, end)
-                        state = "Shortest path found!"
-                        statecolour = (142, 200, 19)
+                        found = algorithm(lambda: draw(surface, grid, rows, width), grid, start, end)
+                    
+                        if not found:
+                            for row in grid:
+                                for node in row:
+                                    if node.colour == YELLOW:
+                                        node.colour = RED
+                            state = "No path possible!"
+                            statecolour = STATERED
+                        else:
+                            for row in grid:
+                                for node in row:
+                                    if node.colour == GREEN:
+                                        node.colour = YELLOW
+                            state = "Shortest path found!"
+                            statecolour = STATEGREEN
                          
             
             elif pygame.mouse.get_pressed()[2]: #Right mouse button
@@ -420,20 +440,34 @@ def main(surface, width):
                     state = "Visualizing..."
                     statecolour = (255, 218, 66)
                     pygame.draw.rect(screen, (40, 41, 35), pygame.Rect(720, 0, 560, 720))
-                    visualizebtn.draw(screen)
+                    visualizebtn.color = statecolour
+                    visualizebtn.draw(screen, THEMEPURPLE)
                     status(screen, state, statecolour)
                     pygame.display.update()
                     for row in grid:
                         for node in row:
-                            if node.colour == RED or node.colour == GREEN or node.colour == BLUE:
+                            if node.colour == YELLOW or node.colour == GREEN or node.colour == BLUE:
                                 node.reset()
                     for row in grid:
                         for node in row:
                             node.updateneighbours(grid)
                         
-                    algorithm(lambda: draw(surface, grid, rows, width), grid, start, end)
-                    state = "Shortest path found!"
-                    statecolour = (142, 200, 19)
+                    found = algorithm(lambda: draw(surface, grid, rows, width), grid, start, end)
+                    
+                    if not found:
+                        for row in grid:
+                            for node in row:
+                                if node.colour == YELLOW:
+                                    node.colour = RED
+                        state = "No path possible!"
+                        statecolour = STATERED
+                    else:
+                        for row in grid:
+                            for node in row:
+                                if node.colour == GREEN:
+                                    node.colour = YELLOW
+                        state = "Shortest path found!"
+                        statecolour = STATEGREEN
                     
                 if event.key == pygame.K_r:
                     start = None
