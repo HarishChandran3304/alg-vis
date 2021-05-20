@@ -6,10 +6,10 @@ from queue import PriorityQueue
 #CONSTANTS
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
-RED = (255, 0, 0) #Visited but close nodes
+RED = (255, 0, 0) #No path found
 GREEN = (0, 255, 0) #Visited and open nodes
 BLUE = (0, 0, 255)  #Path nodes
-YELLOW = (255, 255, 0)
+YELLOW = (255, 255, 0) #Visited but close nodes
 WHITE = (255, 255, 255) #Empty nodes
 BLACK = (0, 0, 0) #Barrier nodes
 PURPLE = (128, 0, 128)
@@ -22,6 +22,7 @@ BTNDARK = (71, 63, 255) #Button normal colour
 BTNLIGHT = (86, 99, 233) #Button hover colour
 STATERED = (198, 10, 9) #Status red colour
 STATEGREEN = (142, 200, 19) #Status green colour
+STATUSBARGREY = (30, 31, 28) #Status bar colour
 
 
 #SETUP
@@ -309,7 +310,8 @@ def getclickedpos(pos, rows, width):
     
     return row, col
 
-def status(surface, state, statecolour, font="verdana", fontsize=30, fontcolour=THEMEPURPLE):
+def status(surface, state, statecolour, font="verdana", fontsize=35, fontcolour=THEMEPURPLE):
+    pygame.draw.rect(screen, STATUSBARGREY, pygame.Rect(720, 0, 560, 95))
     font1 = pygame.font.SysFont(font, fontsize)
     font2 = pygame.font.SysFont(font, fontsize)
     text1 = font1.render("Status: ", 1, fontcolour) 
