@@ -22,6 +22,7 @@ BTNDARK = (71, 63, 255) #Button normal colour
 BTNLIGHT = (86, 99, 233) #Button hover colour
 STATERED = (198, 10, 9) #Status red colour
 STATEGREEN = (142, 200, 19) #Status green colour
+STATEYELLOW = (255, 218, 66) #Status yellow colour
 STATUSBARGREY = (30, 31, 28) #Status bar colour
 
 
@@ -319,6 +320,13 @@ def status(surface, state, statecolour, font="verdana", fontsize=35, fontcolour=
     surface.blit(text1, (740, 20))
     surface.blit(text2, (740+text1.get_width(), 20))
 
+def displayui(surface, grid, rows, width, state, statecolour):
+    draw(surface, grid, rows, width)
+    pygame.draw.rect(screen, THEMEGREY, pygame.Rect(720, 0, 560, 720))
+    visualizebtn.draw(screen, THEMEPURPLE)
+    status(screen, state, statecolour)
+    pygame.display.update()
+
 
 #MAIN
 def main(surface, width):
@@ -337,11 +345,7 @@ def main(surface, width):
             visualizebtn.colour = STATEGREEN
         else:
             visualizebtn.colour = STATERED
-        draw(surface, grid, rows, width)
-        pygame.draw.rect(screen, THEMEGREY, pygame.Rect(720, 0, 560, 720))
-        visualizebtn.draw(screen, THEMEPURPLE)
-        status(screen, state, statecolour)
-        pygame.display.update()
+        displayui(screen, grid, rows, width, state, statecolour)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -385,14 +389,10 @@ def main(surface, width):
                     if visualizebtn.isclicked(pos) and start and end:
                         state = "Visualizing..."
                         statecolour = (255, 218, 66)
-                        pygame.draw.rect(screen, THEMEGREY, pygame.Rect(720, 0, 560, 720))
-                        visualizebtn.color = statecolour
-                        visualizebtn.draw(screen, THEMEPURPLE)
-                        status(screen, state, statecolour)
-                        pygame.display.update()
+                        displayui(screen, grid, rows, width, state, statecolour)
                         for row in grid:
                             for node in row:
-                                if node.colour == YELLOW or node.colour == GREEN or node.colour == BLUE:
+                                if node.colour == YELLOW or node.colour == GREEN or node.colour == BLUE or node.colour == RED:
                                     node.reset()
                         for row in grid:
                             for node in row:
@@ -425,12 +425,12 @@ def main(surface, width):
                     if node == start:
                         start = None
                         state = "Start node missing!"
-                        statecolour = (198, 10, 9)
+                        statecolour = STATERED
                     
                     elif node == end:
                         end = None
                         state = "End node missing!"
-                        statecolour = (198, 10, 9)
+                        statecolour = STATERED
                     
                     node.reset()
                 
@@ -440,15 +440,11 @@ def main(surface, width):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and start and end:
                     state = "Visualizing..."
-                    statecolour = (255, 218, 66)
-                    pygame.draw.rect(screen, (40, 41, 35), pygame.Rect(720, 0, 560, 720))
-                    visualizebtn.color = statecolour
-                    visualizebtn.draw(screen, THEMEPURPLE)
-                    status(screen, state, statecolour)
-                    pygame.display.update()
+                    statecolour = STATEYELLOW
+                    displayui(screen, grid, rows, width, state, statecolour)
                     for row in grid:
                         for node in row:
-                            if node.colour == YELLOW or node.colour == GREEN or node.colour == BLUE:
+                            if node.colour == YELLOW or node.colour == GREEN or node.colour == BLUE or node.colour == RED:
                                 node.reset()
                     for row in grid:
                         for node in row:
