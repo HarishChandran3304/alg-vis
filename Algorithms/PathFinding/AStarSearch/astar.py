@@ -327,6 +327,131 @@ def displayui(surface, grid, rows, width, state, statecolour):
     status(screen, state, statecolour)
     pygame.display.update()
 
+def handleleftclick(surface, pos, rows, width, grid, start, end, state, statecolour):
+    if pos[0] < 720:
+        row, col = getclickedpos(pos, rows, width)
+        node = grid[row][col]
+        
+        if not start and node!=end:
+            start = node
+            start.makestart()
+            if not end:
+                state = "End node missing!"
+                statecolour = STATERED
+            else:
+                state = "Ready to visualize!"
+                statecolour = STATEGREEN
+        
+        elif not end and node!=start:
+            end = node
+            end.makeend()
+            if not start:
+                state = "Start node missing!"
+                statecolour = STATERED
+            else:
+                state = "Ready to visualize!"
+                statecolour = STATEGREEN
+        
+        elif node!=start and node!=end:
+            node.makebarrier()
+            for row in grid:
+                for node in row:
+                    if node.colour == YELLOW or node.colour == GREEN or node.colour == BLUE or node.colour == RED:
+                        node.reset()
+                        state = "Ready to visualize!"
+                        statecolour = STATEGREEN
+                        
+    else:
+        if visualizebtn.isclicked(pos) and start and end:
+            state = "Visualizing..."
+            statecolour = STATEYELLOW
+            displayui(screen, grid, rows, width, state, statecolour)
+            for row in grid:
+                for node in row:
+                    if node.colour == YELLOW or node.colour == GREEN or node.colour == BLUE or node.colour == RED:
+                        node.reset()
+            for row in grid:
+                for node in row:
+                    node.updateneighbours(grid)
+                
+            found = algorithm(lambda: draw(surface, grid, rows, width), grid, start, end)
+        
+            if not found:
+                for row in grid:
+                    for node in row:
+                        if node.colour == YELLOW:
+                            node.colour = RED
+                state = "No path possible!"
+                statecolour = STATERED
+            else:
+                for row in grid:
+                    for node in row:
+                        if node.colour == GREEN:
+                            node.colour = YELLOW
+                state = "Shortest path found!"
+                statecolour = STATEGREEN
+    
+    return start, end, state, statecolour
+            
+def handlerightclick(pos, rows, width, grid, start, end, state, statecolour):
+    row, col = getclickedpos(pos, rows, width)
+    try:
+        node = grid[row][col]
+        
+        if node == start:
+            start = None
+            state = "Start node missing!"
+            statecolour = STATERED
+        
+        elif node == end:
+            end = None
+            state = "End node missing!"
+            statecolour = STATERED
+        
+        node.reset()
+        return start, end, state, statecolour
+    
+    except:
+        pass
+
+def handlespacepress(surface, rows, width, grid, start, end, state, statecolour):
+    for row in grid:
+        for node in row:
+            if node.colour == YELLOW or node.colour == GREEN or node.colour == BLUE or node.colour == RED:
+                node.reset()
+    for row in grid:
+        for node in row:
+            node.updateneighbours(grid)
+        
+    found = algorithm(lambda: draw(surface, grid, rows, width), grid, start, end)
+    
+    if not found:
+        for row in grid:
+            for node in row:
+                if node.colour == YELLOW:
+                    node.colour = RED
+        state = "No path possible!"
+        statecolour = STATERED
+    else:
+        for row in grid:
+            for node in row:
+                if node.colour == GREEN:
+                    node.colour = YELLOW
+        state = "Shortest path found!"
+        statecolour = STATEGREEN
+    
+    return start, end, state, statecolour
+
+def handlerpress(rows, width, start, end, state, statecolour, grid):
+    start = None
+    end = None
+    grid = makegrid(rows, width)
+    state = "Start node missing!"
+    statecolour = STATERED
+    
+    return start, end, state, statecolour, grid
+    
+
 
 #MAIN
 def main(surface, width):
@@ -337,7 +462,7 @@ def main(surface, width):
     end = None
     
     state = "Start node missing!"
-    statecolour = (198, 10, 9)
+    statecolour = STATERED
     
     run = True
     while run:
@@ -345,134 +470,28 @@ def main(surface, width):
             visualizebtn.colour = STATEGREEN
         else:
             visualizebtn.colour = STATERED
-        displayui(screen, grid, rows, width, state, statecolour)
+        displayui(surface, grid, rows, width, state, statecolour)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
             
             if pygame.mouse.get_pressed()[0]: #Left mouse button
                 pos = pygame.mouse.get_pos()
-                if pos[0] < 720:
-                    row, col = getclickedpos(pos, rows, width)
-                    node = grid[row][col]
-                    
-                    if not start and node!=end:
-                        start = node
-                        start.makestart()
-                        if not end:
-                            state = "End node missing!"
-                            statecolour = (198, 10, 9)
-                        else:
-                            state = "Ready to visualize!"
-                            statecolour = (142, 200, 19)
-                    
-                    elif not end and node!=start:
-                        end = node
-                        end.makeend()
-                        if not start:
-                            state = "Start node missing!"
-                            statecolour = (198, 10, 9)
-                        else:
-                            state = "Ready to visualize!"
-                            statecolour = (142, 200, 19)
-                    
-                    elif node!=start and node!=end:
-                        node.makebarrier()
-                        for row in grid:
-                            for node in row:
-                                if node.colour == YELLOW or node.colour == GREEN or node.colour == BLUE:
-                                    node.reset()
-                                    state = "Ready to visualize!"
-                                    statecolour = (142, 200, 19)
-                                    
-                else:
-                    if visualizebtn.isclicked(pos) and start and end:
-                        state = "Visualizing..."
-                        statecolour = (255, 218, 66)
-                        displayui(screen, grid, rows, width, state, statecolour)
-                        for row in grid:
-                            for node in row:
-                                if node.colour == YELLOW or node.colour == GREEN or node.colour == BLUE or node.colour == RED:
-                                    node.reset()
-                        for row in grid:
-                            for node in row:
-                                node.updateneighbours(grid)
-                            
-                        found = algorithm(lambda: draw(surface, grid, rows, width), grid, start, end)
-                    
-                        if not found:
-                            for row in grid:
-                                for node in row:
-                                    if node.colour == YELLOW:
-                                        node.colour = RED
-                            state = "No path possible!"
-                            statecolour = STATERED
-                        else:
-                            for row in grid:
-                                for node in row:
-                                    if node.colour == GREEN:
-                                        node.colour = YELLOW
-                            state = "Shortest path found!"
-                            statecolour = STATEGREEN
-                         
-            
+                start, end, state, statecolour = handleleftclick(surface, pos, rows, width, grid, start, end, state, statecolour)
+                
             elif pygame.mouse.get_pressed()[2]: #Right mouse button
                 pos = pygame.mouse.get_pos()
-                row, col = getclickedpos(pos, rows, width)
-                try:
-                    node = grid[row][col]
-                    
-                    if node == start:
-                        start = None
-                        state = "Start node missing!"
-                        statecolour = STATERED
-                    
-                    elif node == end:
-                        end = None
-                        state = "End node missing!"
-                        statecolour = STATERED
-                    
-                    node.reset()
-                
-                except:
-                    pass
+                start, end, state, statecolour = handlerightclick(pos, rows, width, grid, start, end, state, statecolour)
                 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and start and end:
                     state = "Visualizing..."
                     statecolour = STATEYELLOW
                     displayui(screen, grid, rows, width, state, statecolour)
-                    for row in grid:
-                        for node in row:
-                            if node.colour == YELLOW or node.colour == GREEN or node.colour == BLUE or node.colour == RED:
-                                node.reset()
-                    for row in grid:
-                        for node in row:
-                            node.updateneighbours(grid)
-                        
-                    found = algorithm(lambda: draw(surface, grid, rows, width), grid, start, end)
-                    
-                    if not found:
-                        for row in grid:
-                            for node in row:
-                                if node.colour == YELLOW:
-                                    node.colour = RED
-                        state = "No path possible!"
-                        statecolour = STATERED
-                    else:
-                        for row in grid:
-                            for node in row:
-                                if node.colour == GREEN:
-                                    node.colour = YELLOW
-                        state = "Shortest path found!"
-                        statecolour = STATEGREEN
+                    start, end, state, statecolour = handlespacepress(surface, rows, width, grid, start, end, state, statecolour)
                     
                 if event.key == pygame.K_r:
-                    start = None
-                    end = None
-                    grid = makegrid(rows, width)
-                    state = "Start node missing!"
-                    statecolour = (198, 10, 9)
+                    start, end, state, statecolour, grid = handlerpress(rows, width, start, end, state, statecolour, grid)
     
     pygame.quit()
 
