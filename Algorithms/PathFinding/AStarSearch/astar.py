@@ -35,7 +35,7 @@ pygame.display.set_caption('Alg-Vis')
 
 
 #CLASSES
-class Node:
+class Node():
 	def __init__(self, row, col, width, totalrows):
 		'''
 		Constructor
@@ -327,6 +327,34 @@ def displayui(surface, grid, rows, width, state, statecolour):
     status(screen, state, statecolour)
     pygame.display.update()
 
+def visualize(surface, rows, width, grid, start, end, state, statecolour):
+    for row in grid:
+        for node in row:
+            if node.colour == YELLOW or node.colour == GREEN or node.colour == BLUE or node.colour == RED:
+                node.reset()
+    for row in grid:
+        for node in row:
+            node.updateneighbours(grid)
+        
+    found = algorithm(lambda: draw(surface, grid, rows, width), grid, start, end)
+
+    if not found:
+        for row in grid:
+            for node in row:
+                if node.colour == YELLOW:
+                    node.colour = RED
+        state = "No path possible!"
+        statecolour = STATERED
+    else:
+        for row in grid:
+            for node in row:
+                if node.colour == GREEN:
+                    node.colour = YELLOW
+        state = "Shortest path found!"
+        statecolour = STATEGREEN
+    
+    return state, statecolour
+
 def handleleftclick(surface, pos, rows, width, grid, start, end, state, statecolour):
     if pos[0] < 720:
         row, col = getclickedpos(pos, rows, width)
@@ -366,30 +394,7 @@ def handleleftclick(surface, pos, rows, width, grid, start, end, state, statecol
             state = "Visualizing..."
             statecolour = STATEYELLOW
             displayui(screen, grid, rows, width, state, statecolour)
-            for row in grid:
-                for node in row:
-                    if node.colour == YELLOW or node.colour == GREEN or node.colour == BLUE or node.colour == RED:
-                        node.reset()
-            for row in grid:
-                for node in row:
-                    node.updateneighbours(grid)
-                
-            found = algorithm(lambda: draw(surface, grid, rows, width), grid, start, end)
-        
-            if not found:
-                for row in grid:
-                    for node in row:
-                        if node.colour == YELLOW:
-                            node.colour = RED
-                state = "No path possible!"
-                statecolour = STATERED
-            else:
-                for row in grid:
-                    for node in row:
-                        if node.colour == GREEN:
-                            node.colour = YELLOW
-                state = "Shortest path found!"
-                statecolour = STATEGREEN
+            state, statecolour = visualize(surface, rows, width, grid, start, end, state, statecolour)
     
     return start, end, state, statecolour
             
@@ -415,30 +420,7 @@ def handlerightclick(pos, rows, width, grid, start, end, state, statecolour):
         pass
 
 def handlespacepress(surface, rows, width, grid, start, end, state, statecolour):
-    for row in grid:
-        for node in row:
-            if node.colour == YELLOW or node.colour == GREEN or node.colour == BLUE or node.colour == RED:
-                node.reset()
-    for row in grid:
-        for node in row:
-            node.updateneighbours(grid)
-        
-    found = algorithm(lambda: draw(surface, grid, rows, width), grid, start, end)
-    
-    if not found:
-        for row in grid:
-            for node in row:
-                if node.colour == YELLOW:
-                    node.colour = RED
-        state = "No path possible!"
-        statecolour = STATERED
-    else:
-        for row in grid:
-            for node in row:
-                if node.colour == GREEN:
-                    node.colour = YELLOW
-        state = "Shortest path found!"
-        statecolour = STATEGREEN
+    state, statecolour = visualize(surface, rows, width, grid, start, end, state, statecolour)
     
     return start, end, state, statecolour
 
