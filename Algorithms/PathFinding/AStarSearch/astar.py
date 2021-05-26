@@ -31,7 +31,10 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 icon = pygame.image.load("Logo.svg")
 pygame.display.set_icon(icon)
-pygame.display.set_caption('Alg-Vis')
+pygame.display.set_caption("Alg-Vis")
+slider1 = pygame.transform.scale(pygame.image.load(r"resources/slider1.png"), (275, 225))
+slider2 = pygame.transform.scale(pygame.image.load(r"resources/slider2.png"), (300, 250))
+slider3 = pygame.transform.scale(pygame.image.load(r"resources/slider3.png"), (300, 250))
 
 
 #CLASSES
@@ -325,6 +328,7 @@ def displayui(surface, grid, rows, width, state, statecolour):
     pygame.draw.rect(screen, THEMEGREY, pygame.Rect(720, 0, 560, 720))
     visualizebtn.draw(screen, THEMEPURPLE)
     status(screen, state, statecolour)
+    slider(surface)
     pygame.display.update()
 
 def visualize(surface, rows, width, grid, start, end, state, statecolour):
@@ -432,7 +436,9 @@ def handlerpress(rows, width, start, end, state, statecolour, grid):
     statecolour = STATERED
     
     return start, end, state, statecolour, grid
-    
+
+def slider(surface):
+    surface.blit(slider1, (875, 300))
 
 
 #MAIN
@@ -460,21 +466,21 @@ def main(surface, width):
             if pygame.mouse.get_pressed()[0]: #Left mouse button
                 pos = pygame.mouse.get_pos()
                 start, end, state, statecolour = handleleftclick(surface, pos, rows, width, grid, start, end, state, statecolour)
-                
+            
             elif pygame.mouse.get_pressed()[2]: #Right mouse button
                 pos = pygame.mouse.get_pos()
                 start, end, state, statecolour = handlerightclick(pos, rows, width, grid, start, end, state, statecolour)
-                
+            
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE and start and end:
                     state = "Visualizing..."
                     statecolour = STATEYELLOW
                     displayui(screen, grid, rows, width, state, statecolour)
                     start, end, state, statecolour = handlespacepress(surface, rows, width, grid, start, end, state, statecolour)
-                    
+                
                 if event.key == pygame.K_r:
                     start, end, state, statecolour, grid = handlerpress(rows, width, start, end, state, statecolour, grid)
-    
+
     pygame.quit()
 
 
