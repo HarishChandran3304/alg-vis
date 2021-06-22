@@ -198,7 +198,7 @@ class Button():
 		return False
 
 #CLASS INSTANCES
-visualizebtn = Button(STATERED, 875, 600, 250, 100, "Visualize")
+visualizebtn = Button(GREY, 875, 600, 250, 100, "Visualize")
 
 
 #HELPER FUNCTIONS
@@ -331,6 +331,8 @@ def displayui(surface, grid, rows, width, state, statecolour):
 	pygame.display.update()
 
 def visualize(surface, rows, width, grid, start, end, state, statecolour):
+	visualizebtn.colour = GREY
+    
 	for row in grid:
 		for node in row:
 			if node.colour == YELLOW or node.colour == GREEN or node.colour == BLUE or node.colour == RED:
@@ -394,6 +396,7 @@ def handleleftclick(surface, pos, rows, width, grid, start, end, state, statecol
 						
 	else:
 		if visualizebtn.isclicked(pos) and start and end:
+			visualizebtn.colour = GREY
 			state = "Visualizing..."
 			statecolour = STATEYELLOW
 			displayui(screen, grid, rows, width, state, statecolour)
@@ -417,12 +420,14 @@ def handlerightclick(pos, rows, width, grid, start, end, state, statecolour):
 			statecolour = STATERED
 		
 		node.reset()
+		
 		return start, end, state, statecolour
 	
 	except:
 		pass
 
 def handlespacepress(surface, rows, width, grid, start, end, state, statecolour):
+	visualizebtn.colour = GREY
 	state, statecolour = visualize(surface, rows, width, grid, start, end, state, statecolour)
 	
 	return start, end, state, statecolour
@@ -451,9 +456,9 @@ def main(surface, width):
 	run = True
 	while run:
 		if start and end:
-			visualizebtn.colour = STATEGREEN
+			visualizebtn.colour = BTNLIGHT
 		else:
-			visualizebtn.colour = STATERED
+			visualizebtn.colour = GREY
 		displayui(surface, grid, rows, width, state, statecolour)
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
