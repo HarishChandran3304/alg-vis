@@ -1,7 +1,7 @@
 #IMPORTING PYGAME
 import pygame
 import random
-from datetime import date, datetime
+from datetime import datetime, time
 
 
 #MAKES IT EASY TO TRACK KEYS PRESSED
@@ -35,6 +35,7 @@ length = 600
 start_time = datetime.now()
 #DEFINING FONTS TO DISPLAY TEXT
 font = pygame.font.SysFont('times new roman', 20)
+timer_temp = 0
 
 
 #DISPLAYING WINDOW
@@ -56,15 +57,25 @@ def display_message():
     txt3 = font.render('ALGORITHM USED: "BUBBLE SORT"', 1, white)
     screen.blit(txt3, (500, 30))
 
+    # txt4 = font.render(str(datetime.now() - start_time), 1, white)
+    # screen.blit(txt4, (1000, 30))
+
+    timer()
+
+
+def timer():
+
+    start_time = datetime.now()
     txt4 = font.render(str(datetime.now() - start_time), 1, white)
     screen.blit(txt4, (1000, 30))
+    # pygame.display.update()
 
 
 #ARRAY OF LENGTH 100 IS FORMED SIGNIFYING 100 BARS
 height =[0]*70
 all_colours =[green]*70
 clr_ind = 0
-colours =[orange, red, green, blue]
+colours = [orange, red, green, blue]
 
 #FUNCTION REQUIRED TO CALL IT EACH TIME "R" IS PRESSED AND GENERATE AND A NEW ARRAY
 def making_bars():
@@ -84,7 +95,8 @@ making_bars()
 #FUNCTION TO DISPLAY THE BARS ON THE SCREEN
 def display_bars():
 
-    screen.fill(black)       
+    screen.fill(black)
+    timer()
     display_message()
     #DETERMINES THE WIDTH OF EACH BAR
     width_of_bar =(width-100)//100
@@ -97,12 +109,13 @@ def display_bars():
       
     # Drawing the array values as lines
     for i in range(1, 70):
-        pygame.draw.line(screen, all_colours[i], (distance_of_each_bar * i-3, 100), (distance_of_each_bar * i-3, height[i]*boundry_of_bars + 100), width_of_bar)
+        pygame.draw.line(screen, all_colours[i], (distance_of_each_bar * i, 100), (distance_of_each_bar * i, height[i]*boundry_of_bars + 100), width_of_bar)
 
 
 #AFTER COMPARING TWO LINES THIS IS USED
 def refresh():
 
+    timer()
     display_bars()
     pygame.time.delay(25)
     pygame.display.update()
@@ -155,9 +168,6 @@ def sort():
     for i in range(len(height)):
         all_colours[i] = colours[-1]
         
-    
-    
-
 
 running = True
 while running:
