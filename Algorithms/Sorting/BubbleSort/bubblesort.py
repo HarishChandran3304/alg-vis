@@ -1,6 +1,8 @@
 #IMPORTING PYGAME
 import pygame
 import random
+from datetime import date, datetime
+
 
 #MAKES IT EASY TO TRACK KEYS PRESSED
 from pygame.locals import (
@@ -30,6 +32,7 @@ pygame.font.init()
 # Window size
 width = 1250
 length = 600
+start_time = datetime.now()
 #DEFINING FONTS TO DISPLAY TEXT
 font = pygame.font.SysFont('times new roman', 20)
 
@@ -53,6 +56,9 @@ def display_message():
     txt3 = font.render('ALGORITHM USED: "BUBBLE SORT"', 1, white)
     screen.blit(txt3, (500, 30))
 
+    txt4 = font.render(str(datetime.now() - start_time), 1, white)
+    screen.blit(txt4, (1000, 30))
+
 
 #ARRAY OF LENGTH 100 IS FORMED SIGNIFYING 100 BARS
 height =[0]*70
@@ -67,7 +73,7 @@ def making_bars():
     for i in range(1, 70):
         
         #SETS THE DEFAULT COULOUR OF EACH BAR TO BLUE
-        all_colours[i] = colours[-1]
+        all_colours[i] = blue
         height[i] = random.randrange(1, 90)
 
 
@@ -93,12 +99,14 @@ def display_bars():
     for i in range(1, 70):
         pygame.draw.line(screen, all_colours[i], (distance_of_each_bar * i-3, 100), (distance_of_each_bar * i-3, height[i]*boundry_of_bars + 100), width_of_bar)
 
+
 #AFTER COMPARING TWO LINES THIS IS USED
 def refresh():
 
     display_bars()
     pygame.time.delay(25)
     pygame.display.update()
+
 
 def sort():
 
