@@ -8,14 +8,14 @@ SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
 RED = (255, 0, 0) #No path found
 GREEN = (0, 255, 0) #Visited and open nodes
-BLUE = (0, 0, 255)  #Path nodes
+BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0) #Visited but close nodes
 WHITE = (255, 255, 255) #Empty nodes
 BLACK = (0, 0, 0) #Barrier nodes
-PURPLE = (128, 0, 128)
+PURPLE = (128, 0, 128)  #Path nodes
 ORANGE = (255, 165 ,0) #Start node
 GREY = (128, 128, 128) #Grid lines
-TURQUOISE = (64, 224, 208) #Destination node
+CYAN = (64, 224, 208) #Destination node
 THEMEGREY = (40, 41, 35) #Theme primary
 THEMEPURPLE = (71, 63, 255) #Theme secondary
 BTNDARK = (71, 63, 255) #Button normal colour
@@ -92,13 +92,13 @@ class Node():
 		'''
 		Returns True if a node is the destination node, else returns False
 		'''
-		return self.colour == TURQUOISE
+		return self.colour == CYAN
 
 	def ispath(self):
 		'''
 		Returns True if a node is a part of the path nodes, else returns False
 		'''
-		self.colour == BLUE
+		self.colour == THEMEPURPLE
 
 
 	def makeclosed(self):
@@ -127,15 +127,15 @@ class Node():
 
 	def makeend(self):
 		'''
-		Changes the colour attribute of a node to Turquoise
+		Changes the colour attribute of a node to Cyan
 		'''
-		self.colour = TURQUOISE
+		self.colour = CYAN
 
 	def makepath(self):
 		'''
-		Changes the colour attribute of a node to Blue
+		Changes the colour attribute of a node to Purple
 		'''
-		self.colour = BLUE
+		self.colour = THEMEPURPLE
 
 
 	def draw(self, surface):
@@ -351,7 +351,7 @@ def visualize(surface, rows, width, grid, start, end, state, statecolour):
     
 	for row in grid:
 		for node in row:
-			if node.colour == YELLOW or node.colour == GREEN or node.colour == BLUE or node.colour == RED:
+			if node.colour == YELLOW or node.colour == GREEN or node.colour == THEMEPURPLE or node.colour == RED:
 				node.reset()
 	for row in grid:
 		for node in row:
@@ -408,7 +408,7 @@ def handleleftclick(surface, pos, rows, width, grid, start, end, state, statecol
 			node.makebarrier()
 			for row in grid:
 				for node in row:
-					if node.colour == YELLOW or node.colour == GREEN or node.colour == BLUE or node.colour == RED:
+					if node.colour == YELLOW or node.colour == GREEN or node.colour == THEMEPURPLE or node.colour == RED:
 						node.reset()
 						state = "Ready to visualize!"
 						statecolour = STATEGREEN
