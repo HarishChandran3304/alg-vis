@@ -197,6 +197,7 @@ class Button():
 			
 		return False
 
+
 #CLASS INSTANCES
 visualizebtn = Button(GREY, 875, 600, 250, 100, "Visualize")
 
@@ -452,6 +453,7 @@ def handlespacepress(surface, rows, width, grid, start, end, state, statecolour)
 	Handles "spacebar" press
 	'''
 	visualizebtn.colour = GREY
+	displayui(screen, grid, rows, width, state, statecolour)
 	state, statecolour = visualize(surface, rows, width, grid, start, end, state, statecolour)
 	
 	return start, end, state, statecolour
@@ -489,7 +491,9 @@ def main(surface, width):
 			visualizebtn.colour = BTNLIGHT
 		else:
 			visualizebtn.colour = GREY
+
 		displayui(surface, grid, rows, width, state, statecolour)
+
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				run = False
