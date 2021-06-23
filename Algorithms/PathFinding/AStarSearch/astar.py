@@ -214,6 +214,9 @@ def h(node1, node2):
 
 
 def algorithm(draw, grid, start, end):
+	'''
+	A* algorithm implementation
+	'''
 	count = 0
 	openset = PriorityQueue()
 	openset.put((0, count, start))
@@ -284,6 +287,9 @@ def drawgrid(surface, rows, width):
 		pygame.draw.line(surface, GREY, (j*gap, 0), (j*gap, width))
 
 def drawpath(camefrom, current, draw):
+	'''
+	Draws the shortest path found (if found)
+	'''
 	while current in camefrom:
 		current = camefrom[current]
 		current.makepath()
@@ -315,6 +321,9 @@ def getclickedpos(pos, rows, width):
 	return row, col
 
 def status(surface, state, statecolour, font="verdana", fontsize=35, fontcolour=THEMEPURPLE):
+	'''
+	Displays the status of the algorithm
+	'''
 	pygame.draw.rect(screen, STATUSBARGREY, pygame.Rect(720, 0, 560, 95))
 	font1 = pygame.font.SysFont(font, fontsize)
 	font2 = pygame.font.SysFont(font, fontsize)
@@ -324,6 +333,9 @@ def status(surface, state, statecolour, font="verdana", fontsize=35, fontcolour=
 	surface.blit(text2, (740+text1.get_width(), 20))
 
 def displayui(surface, grid, rows, width, state, statecolour):
+	'''
+	Displays all UI components
+	'''
 	draw(surface, grid, rows, width)
 	pygame.draw.rect(screen, THEMEGREY, pygame.Rect(720, 0, 560, 720))
 	visualizebtn.draw(screen, THEMEPURPLE)
@@ -331,6 +343,9 @@ def displayui(surface, grid, rows, width, state, statecolour):
 	pygame.display.update()
 
 def visualize(surface, rows, width, grid, start, end, state, statecolour):
+	'''
+	Starts the visualization of the algorithm
+	'''
 	visualizebtn.colour = GREY
     
 	for row in grid:
@@ -361,6 +376,9 @@ def visualize(surface, rows, width, grid, start, end, state, statecolour):
 	return state, statecolour
 
 def handleleftclick(surface, pos, rows, width, grid, start, end, state, statecolour):
+	'''
+	Handles all the left clicks
+	'''
 	if pos[0] < 720:
 		row, col = getclickedpos(pos, rows, width)
 		node = grid[row][col]
@@ -405,6 +423,9 @@ def handleleftclick(surface, pos, rows, width, grid, start, end, state, statecol
 	return start, end, state, statecolour
 			
 def handlerightclick(pos, rows, width, grid, start, end, state, statecolour):
+	'''
+	Handles all the right clicks
+	'''
 	row, col = getclickedpos(pos, rows, width)
 	try:
 		node = grid[row][col]
@@ -427,12 +448,18 @@ def handlerightclick(pos, rows, width, grid, start, end, state, statecolour):
 		pass
 
 def handlespacepress(surface, rows, width, grid, start, end, state, statecolour):
+	'''
+	Handles "spacebar" press
+	'''
 	visualizebtn.colour = GREY
 	state, statecolour = visualize(surface, rows, width, grid, start, end, state, statecolour)
 	
 	return start, end, state, statecolour
 
 def handlerpress(rows, width, start, end, state, statecolour, grid):
+	'''
+	Handles "r" press
+	'''
 	start = None
 	end = None
 	grid = makegrid(rows, width)
@@ -444,6 +471,9 @@ def handlerpress(rows, width, start, end, state, statecolour, grid):
 
 #MAIN
 def main(surface, width):
+	'''
+	Main Function
+	'''
 	rows = 36 
 	grid = makegrid(rows, width)
 	
