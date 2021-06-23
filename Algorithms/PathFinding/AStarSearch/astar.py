@@ -62,8 +62,7 @@ class Node():
 		Resets colour attribute of node back to white
 		'''
 		self.colour = WHITE
-
-
+	
 	def isclosed(self):
 		'''
 		Returns True if a node has been visited but is closed, else returns False
@@ -100,7 +99,6 @@ class Node():
 		'''
 		self.colour == THEMEPURPLE
 
-
 	def makeclosed(self):
 		'''
 		Changes the colour attribute of a node to Yellow
@@ -136,7 +134,6 @@ class Node():
 		Changes the colour attribute of a node to Purple
 		'''
 		self.colour = THEMEPURPLE
-
 
 	def draw(self, surface):
 		'''
@@ -211,12 +208,14 @@ def h(node1, node2):
 	'''
 	x1, y1 = node1
 	x2, y2 = node2
+
 	return abs(x2-x1) + abs(y2-y1)
 
 
 def algorithm(draw, grid, start, end):
 	'''
 	A* algorithm implementation
+	[F(n) = G(n) + H(n)]
 	'''
 	count = 0
 	openset = PriorityQueue()
