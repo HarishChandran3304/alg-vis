@@ -168,29 +168,33 @@ def sort():
     for i in range(len(height)):
         all_colours[i] = colours[-1]
         
+def main():
 
-running = True
-while running:
+    running = True
+    while running:
 
-    for event in pygame.event.get():
+        for event in pygame.event.get():
 
-        if event.type == pygame.QUIT:
+            if event.type == pygame.QUIT:
 
-            running = False
-        
-        elif event.type == pygame.KEYDOWN:
-
-            if event.key == K_SPACE:
-                sort()
-            
-            elif event.key == K_r:
-                making_bars()
-            
-            elif event.key == K_ESCAPE:
                 running = False
+            
+            elif event.type == pygame.KEYDOWN:
 
-    display_bars()
-    
-    pygame.display.update()
+                if event.key == K_SPACE:
+                    sort()
+                
+                elif event.key == K_r:
+                    making_bars()
+                
+                elif event.key == K_ESCAPE:
+                    running = False
 
-pygame.quit()
+        display_bars()
+        
+        pygame.display.update()
+
+    pygame.quit()
+
+if __name__ == '__main__':
+    main()
