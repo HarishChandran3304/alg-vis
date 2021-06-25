@@ -197,36 +197,40 @@ def mergesort(height, l, r):
   
 
 
+def main():
 
-running = True 
-# Infinite loop to keep the window open
-while running:
-    # background
-    screen.fill(black)
-    
-    #GETS ALL EVENTS LIKE WHICH KEY IS PRESSED
-    for event in pygame.event.get():
+    running = True 
+    # Infinite loop to keep the window open
+    while running:
+        # background
+        screen.fill(black)
+        
+        #GETS ALL EVENTS LIKE WHICH KEY IS PRESSED
+        for event in pygame.event.get():
 
-        # If we click Close button in window
-        if event.type == pygame.QUIT:
-            running = False
-
-        #IF A KEY IS PRESSED 
-        if event.type == pygame.KEYDOWN:
-
-            if event.key == pygame.K_r:
-                making_bars() 
-
-            elif event.key == K_SPACE:
-                mergesort(height, 1, len(height)-1)
-            
-            #IF ESC KEY IS PRESSED IT QUITS THE PROGRAM
-            elif event.key == K_ESCAPE:
+            # If we click Close button in window
+            if event.type == pygame.QUIT:
                 running = False
-    
-    display_message()
-    displaying_bars()
 
-    pygame.display.update()
-      
-pygame.quit()
+            #IF A KEY IS PRESSED 
+            if event.type == pygame.KEYDOWN:
+
+                if event.key == pygame.K_r:
+                    making_bars() 
+
+                elif event.key == K_SPACE:
+                    mergesort(height, 1, len(height)-1)
+                
+                #IF ESC KEY IS PRESSED IT QUITS THE PROGRAM
+                elif event.key == K_ESCAPE:
+                    running = False
+        
+        display_message()
+        displaying_bars()
+
+        pygame.display.update()
+        
+    pygame.quit()
+
+if __name__ == '__main__':
+    main()

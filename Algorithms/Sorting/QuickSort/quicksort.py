@@ -53,7 +53,7 @@ def display_message():
     txt2 = font.render('"R" FOR NEW ARRAY', 1, white)
     screen.blit(txt2, (20, 40))
 
-    txt3 = font.render('ALGORITHM USED: "BUBBLE SORT"', 1, white)
+    txt3 = font.render('ALGORITHM USED: "QUICK SORT"', 1, white)
     screen.blit(txt3, (500, 30))
 
     # txt4 = font.render(str(datetime.now() - start_time), 1, white)
@@ -172,32 +172,34 @@ def partition(height, lower, higher):
 	
 	return i + 1
 	
+def main():
 
-running = True
-while running:
+    running = True
+    while running:
 
-	for event in pygame.event.get():
-		
-		if event.type == pygame.QUIT:
+        for event in pygame.event.get():
+            
+            if event.type == pygame.QUIT:
 
-			running = False
+                running = False
 
-		elif event.type == pygame.KEYDOWN:
-			
-			if event.key == pygame.K_SPACE:
+            elif event.type == pygame.KEYDOWN:
+                
+                if event.key == pygame.K_SPACE:
 
-				quicksort(height, 1, len(height)-1)	
+                    quicksort(height, 1, len(height)-1)	
 
-			elif event.key == pygame.K_r:
-				making_bars()
+                elif event.key == pygame.K_r:
+                    making_bars()
 
-			elif event.key == K_ESCAPE:
-				running = False
+                elif event.key == K_ESCAPE:
+                    running = False
 
-			
+        display_bars()
 
-	display_bars()
-
-	pygame.display.update()
+        pygame.display.update()
 	
-pygame.quit()
+    pygame.quit()
+
+if __name__ == '__main__':
+    main()
