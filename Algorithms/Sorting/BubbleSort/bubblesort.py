@@ -60,15 +60,6 @@ def display_message():
     # txt4 = font.render(str(datetime.now() - start_time), 1, white)
     # screen.blit(txt4, (1000, 30))
 
-    timer()
-
-
-def timer():
-
-    start_time = datetime.now()
-    txt4 = font.render(str(datetime.now() - start_time), 1, white)
-    screen.blit(txt4, (1000, 30))
-    # pygame.display.update()
 
 
 #ARRAY OF LENGTH 100 IS FORMED SIGNIFYING 100 BARS
@@ -96,7 +87,7 @@ making_bars()
 def display_bars():
 
     screen.fill(black)
-    timer()
+    
     display_message()
     #DETERMINES THE WIDTH OF EACH BAR
     width_of_bar =(width-100)//100
@@ -115,7 +106,7 @@ def display_bars():
 #AFTER COMPARING TWO LINES THIS IS USED
 def refresh():
 
-    timer()
+    
     display_bars()
     pygame.time.delay(25)
     pygame.display.update()
