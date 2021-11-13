@@ -1,5 +1,6 @@
 #IMPORTING PYGAME
 import pygame
+import csv
 
 #MAKES IT EASY TO TRACK KEYS PRESSED
 from pygame.locals import (
@@ -37,6 +38,7 @@ name_text = ''
 phy_text = ''
 chem_text = ''
 math_text = ''
+all_marks_info = []
 
 colour = white
 
@@ -91,7 +93,7 @@ def displaytext():
     pygame.display.flip()
 
 def main():
-    global name_text, phy_text, chem_text, math_text, name_input, phy_input, chem_input, math_input
+    global name_text, phy_text, chem_text, math_text, name_input, phy_input, chem_input, math_input, all_marks_info
 
     name_active = False
     phy_active = False
@@ -162,9 +164,14 @@ def main():
                         math_text += event.unicode  
         
         displaytext()
-
-    print([name_text, phy_text.strip(), chem_text.strip(), math_text])
+    
+    with open('StudentMarks.csv', 'a') as file:
+        writer_object = csv.writer(file)
+        # for row in all_marks_info:
+        writer_object.writerow([name_text, phy_text, chem_text, math_text])
+        
     pygame.quit()
+
 
 if __name__ == '__main__':
     main()
