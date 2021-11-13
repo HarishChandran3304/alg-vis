@@ -42,7 +42,7 @@ colour = white
 
 # timer_temp = 0
 active = False
-running = True
+
 screen = pygame.display.set_mode((width, length))
 pygame.display.set_caption('Taking in user input')
 
@@ -51,7 +51,8 @@ phy_input = pygame.Rect(800, 250, 140, 30)
 chem_input = pygame.Rect(800, 350, 140, 30)
 math_input = pygame.Rect(800, 450, 140, 30)
 
-def func():
+def displaytext():
+    global name_text, phy_text, chem_text, math_text, name_input, phy_input, chem_input, math_input
     screen.fill(black)
     
     pygame.draw.rect(screen, colour, name_input)
@@ -89,20 +90,81 @@ def func():
     
     pygame.display.flip()
 
-while running:
-    for event in pygame.event.get():
+def main():
+    global name_text, phy_text, chem_text, math_text, name_input, phy_input, chem_input, math_input
 
-        if event.type == pygame.QUIT:
-            running = False
+    name_active = False
+    phy_active = False
+    chem_active = False
+    math_active = False
+    running = True
+    while running:
+        for event in pygame.event.get():
 
-        elif event.type == pygame.KEYDOWN:
-            if event.key == K_ESCAPE:
+            if event.type == pygame.QUIT:
                 running = False
-            elif event.key == K_BACKSPACE:
-                name_text = name_text[:-1]
-            else:
-                name_text += event.unicode 
-    func()
 
-print(name_text, '\n', phy_text, '\n', chem_text, '\n', math_text)
-pygame.quit()
+            # IF THE NAME_INPUT GETS FOCUS
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if name_input.collidepoint(event.pos):
+                    name_active = True
+                    phy_active = False
+                    chem_active = False
+                    math_active = False
+
+            # IF THE PHY_INPUT GETS FOCUS
+                if phy_input.collidepoint(event.pos):
+                    name_active = False
+                    phy_active = True
+                    chem_active = False
+                    math_active = False
+
+            # IF THE CHEM_INPUT GETS FOCUS
+                if chem_input.collidepoint(event.pos):
+                    name_active = False
+                    phy_active = False
+                    chem_active = True
+                    math_active = False
+            
+             # IF THE CHEM_INPUT GETS FOCUS
+                if math_input.collidepoint(event.pos):
+                    name_active = False
+                    phy_active = False
+                    chem_active = False
+                    math_active = True
+
+            elif event.type == pygame.KEYDOWN:
+                if event.key == K_ESCAPE:
+                    running = False
+
+                if name_active == True:
+                    if event.key == K_BACKSPACE:
+                        name_text = name_text[:-1]
+                    else:
+                        name_text += event.unicode 
+
+                if phy_active == True:
+                    if event.key == K_BACKSPACE:
+                        phy_text = phy_text[:-1]
+                    else:
+                        phy_text += event.unicode 
+                
+                if chem_active == True:
+                    if event.key == K_BACKSPACE:
+                        chem_text = chem_text[:-1]
+                    else:
+                        chem_text += event.unicode 
+
+                if math_active == True:
+                    if event.key == K_BACKSPACE:
+                        math_text = math_text[:-1]
+                    else:
+                        math_text += event.unicode  
+        
+        displaytext()
+
+    print([name_text, phy_text.strip(), chem_text.strip(), math_text])
+    pygame.quit()
+
+if __name__ == '__main__':
+    main()
