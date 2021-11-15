@@ -3,6 +3,8 @@ import pygame
 from queue import PriorityQueue
 from time import time
 import csv
+from tkinter import *
+from tkinter import filedialog
 
 
 #CONSTANTS
@@ -401,6 +403,11 @@ def visualize(surface, rows, width, grid, start, end, state, statecolour):
 	return state, statecolour
 
 def savecsv(grid):
+	tkwin = Tk()
+	tkwin.withdraw()
+	filename = filedialog.asksaveasfilename(initialdir="./Algorithms/PathFinding/AStarSearch/saved/", title="Select file", filetypes=(("CSV Files","*.csv"),("All","*.*")))
+	tkwin.destroy()
+	
 	gridconfig = []
 	for row in grid:
 		rowconfig = []
@@ -415,9 +422,7 @@ def savecsv(grid):
 				rowconfig.append(3)
 		gridconfig.append(rowconfig)
 	
-	print(gridconfig)
-	
-	with open(r"test.csv", "w", newline="") as file:
+	with open(f'{filename}', "w", newline="") as file:
 		writer = csv.writer(file)
 		writer.writerows(gridconfig)
 
@@ -427,7 +432,11 @@ def loadcsv(grid):
 	state = "Start node missing!"
 	statecolour = STATERED
  
-	with open("test.csv", "r") as file:
+	tkwin = Tk()
+	tkwin.withdraw()
+	filename = filedialog.asksaveasfilename(initialdir="./Algorithms/PathFinding/AStarSearch/saved/", title="Select file", filetypes=(("CSV Files","*.csv"),("All","*.*")))
+	tkwin.destroy()
+	with open(filename, "r") as file:
 		reader = list(csv.reader(file))
 		
 		for row in grid:
@@ -456,8 +465,7 @@ def loadcsv(grid):
 						state = "Ready to visualize!"
 						statecolour = STATEGREEN
 	
-	return start, end, state, statecolour
-				
+	return start, end, state, statecolour			
 
 def handleleftclick(surface, pos, rows, width, grid, start, end, state, statecolour):
 	'''
@@ -573,8 +581,6 @@ def main(surface, width):
 	
 	state = "Start node missing!"
 	statecolour = STATERED
-	
-	start, end, state, statecolour = loadcsv(grid)
  
 	run = True
 	while run:
