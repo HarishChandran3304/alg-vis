@@ -1,6 +1,7 @@
 #IMPORTS
 import pygame
 from queue import PriorityQueue
+from time import time
 
 
 #CONSTANTS
@@ -23,7 +24,11 @@ BTNLIGHT = (86, 99, 233) #Button hover colour
 STATERED = (198, 10, 9) #Status red colour
 STATEGREEN = (142, 200, 19) #Status green colour
 STATEYELLOW = (255, 218, 66) #Status yellow colour
-STATUSBARGREY = (30, 31, 28) #Status bar colour
+STATUSBARGREY = (30, 31, 28) #Status bar colour	
+
+
+#VARIABLES
+elapsed = ""
 
 
 #SETUP
@@ -324,7 +329,7 @@ def status(surface, state, statecolour, font="verdana", fontsize=35, fontcolour=
 	'''
 	Displays the status of the algorithm
 	'''
-	pygame.draw.rect(screen, STATUSBARGREY, pygame.Rect(720, 0, 560, 95))
+	pygame.draw.rect(screen, STATUSBARGREY, pygame.Rect(720, 0, 560, 175))
 	font1 = pygame.font.SysFont(font, fontsize)
 	font2 = pygame.font.SysFont(font, fontsize)
 	text1 = font1.render("Status: ", 1, fontcolour) 
@@ -332,7 +337,15 @@ def status(surface, state, statecolour, font="verdana", fontsize=35, fontcolour=
 	surface.blit(text1, (740, 20))
 	surface.blit(text2, (740+text1.get_width(), 20))
 
-def displayui(surface, grid, rows, width, state, statecolour):
+def timer(surface, time="", font="verdana", fontsize=30, fontcolour=THEMEPURPLE):
+	'''
+	Displays the time elapsed for the algorithm
+	'''
+	font = pygame.font.SysFont(font, fontsize)
+	text = font.render(f'Time Elapsed: {time}', 1, fontcolour)
+	surface.blit(text, (740, 100))
+
+def displayui(surface, grid, rows, width, state, statecolour, time):
 	'''
 	Displays all UI components
 	'''
@@ -340,14 +353,18 @@ def displayui(surface, grid, rows, width, state, statecolour):
 	pygame.draw.rect(screen, THEMEGREY, pygame.Rect(720, 0, 560, 720))
 	visualizebtn.draw(screen, THEMEPURPLE)
 	status(screen, state, statecolour)
+	timer(screen, time)
 	pygame.display.update()
 
 def visualize(surface, rows, width, grid, start, end, state, statecolour):
 	'''
 	Starts the visualization of the algorithm
 	'''
+	global elapsed
 	visualizebtn.colour = GREY
-    
+
+	starttime = time()	
+ 
 	for row in grid:
 		for node in row:
 			if node.colour == YELLOW or node.colour == GREEN or node.colour == THEMEPURPLE or node.colour == RED:
@@ -373,12 +390,16 @@ def visualize(surface, rows, width, grid, start, end, state, statecolour):
 		state = "Shortest path found!"
 		statecolour = STATEGREEN
 	
+	endtime = time()
+	elapsed = f'{round(endtime-starttime, 2)} sec'
 	return state, statecolour
 
 def handleleftclick(surface, pos, rows, width, grid, start, end, state, statecolour):
 	'''
 	Handles all the left clicks
 	'''
+	global elapsed
+
 	if pos[0] < 720:
 		row, col = getclickedpos(pos, rows, width)
 		node = grid[row][col]
@@ -417,7 +438,7 @@ def handleleftclick(surface, pos, rows, width, grid, start, end, state, statecol
 			visualizebtn.colour = GREY
 			state = "Visualizing A* Search"
 			statecolour = STATEYELLOW
-			displayui(screen, grid, rows, width, state, statecolour)
+			displayui(screen, grid, rows, width, state, statecolour, elapsed)
 			state, statecolour = visualize(surface, rows, width, grid, start, end, state, statecolour)
 	
 	return start, end, state, statecolour
@@ -451,8 +472,9 @@ def handlespacepress(surface, rows, width, grid, start, end, state, statecolour)
 	'''
 	Handles "spacebar" press
 	'''
+	global elapsed
 	visualizebtn.colour = GREY
-	displayui(screen, grid, rows, width, state, statecolour)
+	displayui(screen, grid, rows, width, state, statecolour, elapsed)
 	state, statecolour = visualize(surface, rows, width, grid, start, end, state, statecolour)
 	
 	return start, end, state, statecolour
@@ -475,6 +497,9 @@ def main(surface, width):
 	'''
 	Main Function
 	'''
+	
+	global elapsed
+
 	rows = 36 
 	grid = makegrid(rows, width)
 	
@@ -491,7 +516,7 @@ def main(surface, width):
 		else:
 			visualizebtn.colour = GREY
 
-		displayui(surface, grid, rows, width, state, statecolour)
+		displayui(surface, grid, rows, width, state, statecolour, elapsed)
 
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -509,7 +534,7 @@ def main(surface, width):
 				if event.key == pygame.K_SPACE and start and end:
 					state = "Visualizing..."
 					statecolour = STATEYELLOW
-					displayui(screen, grid, rows, width, state, statecolour)
+					displayui(screen, grid, rows, width, state, statecolour, elapsed)
 					start, end, state, statecolour = handlespacepress(surface, rows, width, grid, start, end, state, statecolour)
 				
 				if event.key == pygame.K_r:
