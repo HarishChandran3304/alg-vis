@@ -2,6 +2,7 @@
 import pygame
 from queue import PriorityQueue
 from time import time
+import csv
 
 
 #CONSTANTS
@@ -68,6 +69,12 @@ class Node():
 		'''
 		self.colour = WHITE
 	
+	def isempty(self):
+		'''
+		Returns True if a node is empty, else returns False
+		'''
+		return self.colour == WHITE
+	 
 	def isclosed(self):
 		'''
 		Returns True if a node has been visited but is closed, else returns False
@@ -215,7 +222,6 @@ def h(node1, node2):
 	x2, y2 = node2
 
 	return abs(x2-x1) + abs(y2-y1)
-
 
 def algorithm(draw, grid, start, end):
 	'''
@@ -394,6 +400,65 @@ def visualize(surface, rows, width, grid, start, end, state, statecolour):
 	elapsed = f'{round(endtime-starttime, 2)} sec'
 	return state, statecolour
 
+def savecsv(grid):
+	gridconfig = []
+	for row in grid:
+		rowconfig = []
+		for node in row:
+			if node.isempty():
+				rowconfig.append(0)
+			elif node.isclosed():
+				rowconfig.append(1)
+			elif node.isbarrier():
+				rowconfig.append(2)
+			elif node.isend():
+				rowconfig.append(3)
+		gridconfig.append(rowconfig)
+	
+	print(gridconfig)
+	
+	with open(r"test.csv", "w", newline="") as file:
+		writer = csv.writer(file)
+		writer.writerows(gridconfig)
+
+def loadcsv(grid):
+	start = None
+	end = None
+	state = "Start node missing!"
+	statecolour = STATERED
+ 
+	with open("test.csv", "r") as file:
+		reader = list(csv.reader(file))
+		
+		for row in grid:
+			for node in row:
+				x, y = node.getpos()
+				if int(reader[y][x]) == 0:
+					node.reset()
+				elif int(reader[y][x]) == 1:
+					node.makebarrier()
+				elif int(reader[y][x]) == 2:
+					node.makestart()
+					start = node
+					if not end:
+						state = "End node missing!"
+						statecolour = STATERED
+					else:
+						state = "Ready to visualize!"
+						statecolour = STATEGREEN
+				elif int(reader[y][x]) == 3:
+					node.makeend()
+					end = node
+					if not start:
+						state = "Start node missing!"
+						statecolour = STATERED
+					else:
+						state = "Ready to visualize!"
+						statecolour = STATEGREEN
+	
+	return start, end, state, statecolour
+				
+
 def handleleftclick(surface, pos, rows, width, grid, start, end, state, statecolour):
 	'''
 	Handles all the left clicks
@@ -509,6 +574,8 @@ def main(surface, width):
 	state = "Start node missing!"
 	statecolour = STATERED
 	
+	start, end, state, statecolour = loadcsv(grid)
+ 
 	run = True
 	while run:
 		if start and end:
