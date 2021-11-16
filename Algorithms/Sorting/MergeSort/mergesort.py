@@ -37,17 +37,16 @@ font = pygame.font.SysFont('times new roman', 20)
 screen = pygame.display.set_mode((width, length))
 pygame.display.set_caption('Merge sort')
 
-
 #USED TO DISPLAY TEXT ON THE SCREEN
 def display_message():
     #TEXT MESSAGE
-    txt1 = font.render('"SPACE" TO SORT', 1, white)
+    txt = font.render('"SPACE" TO SORT', 1, white)
     #POSITION OF TEXT
-    screen.blit(txt1, (20, 20))
-    txt2 = font.render('"R" FOR NEW ARRAY', 1, white)
-    screen.blit(txt2, (20, 40))
-    txt3 = font.render('ALGORITHM USED: "MERGE SORT"', 1, white)
-    screen.blit(txt3, (500, 30))
+    screen.blit(txt, (20, 20))
+    txt = font.render('"R" FOR NEW ARRAY', 1, white)
+    screen.blit(txt, (20, 40))
+    txt = font.render('ALGORITHM USED: "MERGE SORT"', 1, white)
+    screen.blit(txt, (500, 30))
 
 #ARRAY OF LENGTH 100 IS FORMED SIGNIFYING 100 BARS
 height =[0]*70

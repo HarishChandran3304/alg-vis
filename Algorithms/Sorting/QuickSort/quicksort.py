@@ -42,13 +42,13 @@ pygame.display.set_caption('Quick sort')
 #USED TO DISPLAY TEXT ON THE SCREEN
 def display_message():
     #TEXT MESSAGE
-    txt1 = font.render('"SPACE" TO SORT', 1, white)
+    txt = font.render('"SPACE" TO SORT', 1, white)
     #POSITION OF TEXT
-    screen.blit(txt1, (20, 20))
-    txt2 = font.render('"R" FOR NEW ARRAY', 1, white)
-    screen.blit(txt2, (20, 40))
-    txt3 = font.render('ALGORITHM USED: "QUICK SORT"', 1, white)
-    screen.blit(txt3, (500, 30))
+    screen.blit(txt, (20, 20))
+    txt = font.render('"R" FOR NEW ARRAY', 1, white)
+    screen.blit(txt, (20, 40))
+    txt = font.render('ALGORITHM USED: "QUICK SORT"', 1, white)
+    screen.blit(txt, (500, 30))
 
 #ARRAY OF LENGTH 100 IS FORMED SIGNIFYING 100 BARS
 height =[0]*70
@@ -81,13 +81,11 @@ def display_bars():
     for i in range(1, 70):
         pygame.draw.line(screen, all_colours[i], (distance_of_each_bar * i-3, 100), (distance_of_each_bar * i-3, height[i]*boundry_of_bars + 100), width_of_bar)
 
-
 #AFTER COMPARING TWO LINES THIS IS USED
 def refresh():
     display_bars()
     pygame.time.delay(25)
     pygame.display.update()
-
 	
 # RECURSIVE FUNCTION TO KEEP EXECUTING TILL SORTED
 def quicksort(height, l, r):
