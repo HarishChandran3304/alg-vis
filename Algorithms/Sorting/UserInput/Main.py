@@ -1,4 +1,5 @@
-choice = input('Enter choice (p, c or m) ').lower()
+subject_choice = input('Enter choice (p, c or m) ').lower()
+sorting_choice = int(input('Enter 1 for bubble sort and 2 for merge sort '))
 
 from csv import *
 
@@ -33,13 +34,14 @@ phy_colour = [white]*number_of_items
 chem_colour = [white]*number_of_items
 math_colour = [white]*number_of_items
 
+
 # while True:
-if choice == 'p':physicsfunc(phy_marks, phy_colour)
-elif choice == 'c':chemfunc(chem_marks, chem_colour)
-elif choice == 'm': mathfunc(math_marks, math_colour)
-elif choice == 'exit':exit()
-    # else: print('Invalid input')
+if sorting_choice == 1:
+    if subject_choice == 'p':bubblesort(phy_marks, phy_colour)
+    elif subject_choice == 'c':bubblesort(chem_marks, chem_colour)
+    elif subject_choice == 'm': bubblesort(math_marks, math_colour)
 
-
-'''    if __name__ == '__main__':
-        main()'''
+if sorting_choice == 2:
+    if subject_choice == 'p':mergesort(phy_marks, phy_colour)
+    elif subject_choice == 'c':mergesort(chem_marks, chem_colour)
+    elif subject_choice == 'm': mergesort(math_marks, math_colour)
