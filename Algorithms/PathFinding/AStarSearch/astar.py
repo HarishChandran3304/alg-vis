@@ -211,6 +211,8 @@ class Button():
 
 #CLASS INSTANCES
 visualizebtn = Button(GREY, 875, 600, 250, 100, "Visualize")
+savebtn = Button(THEMEPURPLE, 875, 200, 250, 100, "Save")
+loadbtn = Button(THEMEPURPLE, 875, 400, 250, 100, "Load")
 
 
 #HELPER FUNCTIONS
@@ -360,6 +362,8 @@ def displayui(surface, grid, rows, width, state, statecolour, time):
 	draw(surface, grid, rows, width)
 	pygame.draw.rect(screen, THEMEGREY, pygame.Rect(720, 0, 560, 720))
 	visualizebtn.draw(screen, THEMEPURPLE)
+	savebtn.draw(screen, THEMEPURPLE)
+	loadbtn.draw(screen, THEMEPURPLE)
 	status(screen, state, statecolour)
 	timer(screen, time)
 	pygame.display.update()
@@ -408,15 +412,20 @@ def savecsv(grid):
 	filename = filedialog.asksaveasfilename(initialdir="./Algorithms/PathFinding/AStarSearch/saved/", title="Select file", filetypes=(("CSV Files","*.csv"),("All","*.*")))
 	tkwin.destroy()
 	
+	if filename is None:
+	 	return
+	
+	filename = filename+".csv" if filename[-4:] != ".csv" else filename
+ 
 	gridconfig = []
 	for row in grid:
 		rowconfig = []
 		for node in row:
 			if node.isempty():
 				rowconfig.append(0)
-			elif node.isclosed():
-				rowconfig.append(1)
 			elif node.isbarrier():
+				rowconfig.append(1)
+			elif node.isstart():
 				rowconfig.append(2)
 			elif node.isend():
 				rowconfig.append(3)
@@ -434,8 +443,12 @@ def loadcsv(grid):
  
 	tkwin = Tk()
 	tkwin.withdraw()
-	filename = filedialog.asksaveasfilename(initialdir="./Algorithms/PathFinding/AStarSearch/saved/", title="Select file", filetypes=(("CSV Files","*.csv"),("All","*.*")))
+	filename = filedialog.askopenfilename(initialdir="./Algorithms/PathFinding/AStarSearch/saved/", title="Select file", filetypes=(("CSV Files","*.csv"),("All","*.*")))
 	tkwin.destroy()
+	
+	if filename is None:
+	 	return
+
 	with open(filename, "r") as file:
 		reader = list(csv.reader(file))
 		
@@ -513,6 +526,12 @@ def handleleftclick(surface, pos, rows, width, grid, start, end, state, statecol
 			statecolour = STATEYELLOW
 			displayui(screen, grid, rows, width, state, statecolour, elapsed)
 			state, statecolour = visualize(surface, rows, width, grid, start, end, state, statecolour)
+
+		elif savebtn.isclicked(pos):
+			savecsv(grid)
+
+		elif loadbtn.isclicked(pos):
+			start, end, state, statecolour = loadcsv(grid)
 	
 	return start, end, state, statecolour
 			
