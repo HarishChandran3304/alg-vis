@@ -1,18 +1,16 @@
-from pygame.draw import line
-
-
 white = (255, 255, 255)
 black = (0, 0, 0)
 red = (255, 0, 0)
 green = (0, 255, 0)
 blue = (0,100,255)
 orange = (255, 165, 0)
+ended = False
 
-def bubblesort(marks, colour):
+def bubblesort(marks_info, colour):
+    marks = list(marks_info.keys())
     number_of_items = len(colour)
     #IMPORTING PYGAME
     import pygame
-    
 
     #MAKES IT EASY TO TRACK KEYS PRESSED
     from pygame.locals import (
@@ -43,12 +41,19 @@ def bubblesort(marks, colour):
 
     #USED TO DISPLAY TEXT ON THE SCREEN
     def display_message():
+        global ended
         #TEXT MESSAGE
         txt = font.render('"SPACE" TO SORT', 1, white)
         #POSITION OF TEXT
         screen.blit(txt, (width//2-50, 20))
         txt = font.render('ALGORITHM USED: "BUBBLE SORT"', 1, white)
         screen.blit(txt, (width//2-150, 50))
+        if ended == True:
+            marks_in_order = marks
+            marks_in_order.sort()
+            txt = font.render(marks_info[marks_in_order[-1]]+ ' got '+ str(marks_in_order[-1]), 1, white)
+            #POSITION OF TEXT
+            screen.blit(txt, (width//2-50, 70))
 
     colours = [orange, red, green, blue]
 
@@ -73,6 +78,7 @@ def bubblesort(marks, colour):
         pygame.display.update()
 
     def sort():
+        global ended
         for i in range(len(marks)-1):
             for elem_marks in range(len(marks) - i - 1):
                 for event in pygame.event.get():
@@ -102,9 +108,10 @@ def bubblesort(marks, colour):
                 #COLOURS SET TO ORANGE INDICATING THEY HAVE BEEN TRAVERSED THROUGH
                 colour[elem_marks] = colours[0]
                 colour[elem_marks+1] = colours[0]
-
-        for i in range(len(marks)):
-            colour[i] = colours[-1]
+        ended = True
+        '''txt = font.render(marks_info[marks_in_order[0]]+ 'got'+ str(marks_in_order[0]), 1, white)
+        #POSITION OF TEXT
+        screen.blit(txt, (width//2-50, 20))'''
             
     def main():
         running = True
@@ -127,11 +134,11 @@ def bubblesort(marks, colour):
         pygame.quit()
     main()
 
-def mergesort(marks, colour):
+def mergesort(marks_info, colour):
+    marks = list(marks_info.keys())
     number_of_items = len(colour)
     #IMPORTING PYGAME
     import pygame
-    
 
     #MAKES IT EASY TO TRACK KEYS PRESSED
     from pygame.locals import (
@@ -152,7 +159,7 @@ def mergesort(marks, colour):
     #OTHER VARIABLES
     # Window size
     width = number_of_items*100
-    length = 600
+    length = 750
     #DEFINING FONTS TO DISPLAY TEXT
     font = pygame.font.SysFont('times new roman', 20)
 
@@ -160,28 +167,35 @@ def mergesort(marks, colour):
     screen = pygame.display.set_mode((width, length))
     pygame.display.set_caption('Merge sort')
 
-
     #USED TO DISPLAY TEXT ON THE SCREEN
     def display_message():
+        global ended
         #TEXT MESSAGE
         txt = font.render('"SPACE" TO SORT', 1, white)
         #POSITION OF TEXT
-        screen.blit(txt, (20, 20))
+        screen.blit(txt, (width//2-50, 20))
         txt = font.render('ALGORITHM USED: "MERGE SORT"', 1, white)
-        screen.blit(txt, (500, 30))
+        screen.blit(txt, (width//2-150, 50))
+        if ended == True:
+            marks_in_order = marks
+            marks_in_order.sort()
+            txt = font.render(marks_info[marks_in_order[-1]]+ ' got '+ str(marks_in_order[-1]), 1, white)
+            #POSITION OF TEXT
+            screen.blit(txt, (width//2-50, 70))
 
     colours =[orange, red, green, blue]
 
-
     #FUNCTION TO DISPLAY THE BARS ON THE SCREEN
-    def displaying_bars():
+    def display_bars(number_of_items=number_of_items):
+        screen.fill(black)
+        display_message()
         #DETERMINES THE WIDTH OF EACH BAR
         width_of_bar =(width-100)//100
         #GIVES UNIFORM DISTANCE OF 900 / 50 UNITS BEHIND EACH BAR, 900 WAS CHOSEN BECAUSE IT IS THE LENGTH OF THE SCREEN
         distance_of_each_bar = 900 / 50
         #DETERMINES THE LENTH TILL WHERE THE BAR WILL REACH
         boundry_of_bars = 500 / 100
-        #DISPLAYS THE BARS ON THE SCREEN
+        # Drawing the array values as lines
         for i in range(number_of_items):
             pygame.draw.line(screen, colour[i], (distance_of_each_bar * i, 100), (distance_of_each_bar * i, marks[i]*boundry_of_bars + 100), width_of_bar)
 
@@ -189,7 +203,7 @@ def mergesort(marks, colour):
     def refresh():
         screen.fill(black)
         display_message()
-        displaying_bars()
+        display_bars()
         pygame.time.delay(25)
         pygame.display.update()
 
@@ -243,6 +257,7 @@ def mergesort(marks, colour):
 
     #ALGORITHIM FOR MERGE SORT
     def algorithm(marks, l, r):
+        global ended
         for event in pygame.event.get():
                     if event.type == pygame.QUIT:
                         pygame.quit()
@@ -256,6 +271,8 @@ def mergesort(marks, colour):
             algorithm(marks, l, mid)
             algorithm(marks, mid + 1, r)
             merge(marks, l, mid, mid + 1, r)
+            
+        ended = True
     
     def main():
         running = True 
@@ -278,7 +295,7 @@ def mergesort(marks, colour):
                     elif event.key == K_ESCAPE:
                         running = False
             display_message()
-            displaying_bars()
+            display_bars()
             pygame.display.update()
             
         pygame.quit()
