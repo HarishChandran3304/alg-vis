@@ -11,14 +11,14 @@ An interactive tool to visualize path-finding and sorting algorithms built using
 ### Algorithms:
 
 - ### Path-Finding
-  - A\* Search
-  - Dijkstra's Algorithm
+  - [A\* Search](https://en.wikipedia.org/wiki/A*_search_algorithm)
+  - [Dijkstra's Algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
 - ### Sorting
-  - Bubble Sort
-  - Merge Sort
-  - Quick Sort
+  - [Bubble Sort](https://en.wikipedia.org/wiki/Bubble_sort)
+  - [Merge Sort](https://en.wikipedia.org/wiki/Merge_sort)
+  - [Quick Sort](https://en.wikipedia.org/wiki/Quicksort)
 
-# Authors
+# Team
 
-- Harish Chandran [12A]
-- Devansh Sharma [12B]
+- [Harish Chandran [12A]](https://github.com/HarishChandran3304)
+- [Devansh Sharma [12B]](https://github.com/DevanshSharma867)
