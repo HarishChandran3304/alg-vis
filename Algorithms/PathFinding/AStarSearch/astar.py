@@ -39,7 +39,7 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 icon = pygame.image.load("Logo.svg")
 pygame.display.set_icon(icon)
-pygame.display.set_caption("Alg-Vis")
+pygame.display.set_caption("A-Star Search")
 
 
 #CLASSES
@@ -409,7 +409,7 @@ def visualize(surface, rows, width, grid, start, end, state, statecolour):
 def savecsv(grid):
 	tkwin = Tk()
 	tkwin.withdraw()
-	filename = filedialog.asksaveasfilename(initialdir="./Algorithms/PathFinding/AStarSearch/saved/", title="Select file", filetypes=(("CSV Files","*.csv"),("All","*.*")))
+	filename = filedialog.asksaveasfilename(initialdir="./Algorithms/PathFinding/saved/", title="Select file", filetypes=(("CSV Files","*.csv"),("All","*.*")))
 	tkwin.destroy()
 	
 	if filename is None:
@@ -421,14 +421,14 @@ def savecsv(grid):
 	for row in grid:
 		rowconfig = []
 		for node in row:
-			if node.isempty():
-				rowconfig.append(0)
-			elif node.isbarrier():
+			if node.isbarrier():
 				rowconfig.append(1)
 			elif node.isstart():
 				rowconfig.append(2)
 			elif node.isend():
 				rowconfig.append(3)
+			else:
+				rowconfig.append(0)
 		gridconfig.append(rowconfig)
 	
 	with open(f'{filename}', "w", newline="") as file:
@@ -443,7 +443,7 @@ def loadcsv(grid):
  
 	tkwin = Tk()
 	tkwin.withdraw()
-	filename = filedialog.askopenfilename(initialdir="./Algorithms/PathFinding/AStarSearch/saved/", title="Select file", filetypes=(("CSV Files","*.csv"),("All","*.*")))
+	filename = filedialog.askopenfilename(initialdir="./Algorithms/PathFinding/saved/", title="Select file", filetypes=(("CSV Files","*.csv"),("All","*.*")))
 	tkwin.destroy()
 	
 	if filename is None:
@@ -455,11 +455,11 @@ def loadcsv(grid):
 		for row in grid:
 			for node in row:
 				x, y = node.getpos()
-				if int(reader[y][x]) == 0:
+				if int(reader[x][y]) == 0:
 					node.reset()
-				elif int(reader[y][x]) == 1:
+				elif int(reader[x][y]) == 1:
 					node.makebarrier()
-				elif int(reader[y][x]) == 2:
+				elif int(reader[x][y]) == 2:
 					node.makestart()
 					start = node
 					if not end:
@@ -468,7 +468,7 @@ def loadcsv(grid):
 					else:
 						state = "Ready to visualize!"
 						statecolour = STATEGREEN
-				elif int(reader[y][x]) == 3:
+				elif int(reader[x][y]) == 3:
 					node.makeend()
 					end = node
 					if not start:

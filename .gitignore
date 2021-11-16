@@ -140,3 +140,4 @@ cython_debug/
 # Testing
 /test
 test.csv
+.csv
