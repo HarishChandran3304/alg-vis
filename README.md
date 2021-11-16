@@ -16,6 +16,7 @@ An interactive tool to visualize path-finding and sorting algorithms built using
 - ### Sorting
   - Bubble Sort
   - Merge Sort
+  - Quick Sort
 
 # Authors
 
