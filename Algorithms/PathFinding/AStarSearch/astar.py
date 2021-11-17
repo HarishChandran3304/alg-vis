@@ -604,7 +604,7 @@ def main(surface, width):
 	run = True
 	while run:
 		if start and end:
-			visualizebtn.colour = BTNLIGHT
+			visualizebtn.colour = THEMEPURPLE
 		else:
 			visualizebtn.colour = GREY
 
