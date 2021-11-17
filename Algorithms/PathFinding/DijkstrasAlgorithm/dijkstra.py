@@ -510,7 +510,7 @@ def handleleftclick(surface, pos, rows, width, grid, start, end, state, statecol
 	else:
 		if visualizebtn.isclicked(pos) and start and end:
 			visualizebtn.colour = GREY
-			state = "Visualizing A* Search"
+			state = "Visualizing..."
 			statecolour = STATEYELLOW
 			displayui(screen, grid, rows, width, state, statecolour, elapsed)
 			state, statecolour = visualize(surface, rows, width, grid, start, end, state, statecolour)
