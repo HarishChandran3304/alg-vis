@@ -27,7 +27,7 @@ BTNLIGHT = (86, 99, 233) #Button hover colour
 STATERED = (198, 10, 9) #Status red colour
 STATEGREEN = (142, 200, 19) #Status green colour
 STATEYELLOW = (255, 218, 66) #Status yellow colour
-STATUSBARGREY = (30, 31, 28) #Status bar colour	
+STATUSBARGREY = (30, 31, 28) #Status bar colour
 
 
 #VARIABLES
@@ -39,7 +39,7 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 icon = pygame.image.load("Logo.svg")
 pygame.display.set_icon(icon)
-pygame.display.set_caption("A-Star Search")
+pygame.display.set_caption("A* Search")
 
 
 #CLASSES
