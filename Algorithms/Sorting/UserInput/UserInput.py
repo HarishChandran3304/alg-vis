@@ -104,7 +104,11 @@ def main():
         for event in pygame.event.get():
 
             if event.type == pygame.QUIT:
-                running = False
+                if name_text == '' or phy_text == '' or chem_text == '' or math_text == '':
+                    txt = display_font.render('"SPACE" TO SORT', 1, white)
+                    screen.blit(txt, (width//2-50, 20))
+                else:
+                    running = False
 
             # IF THE NAME_INPUT GETS FOCUS
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -137,7 +141,11 @@ def main():
 
             elif event.type == pygame.KEYDOWN:
                 if event.key == K_ESCAPE:
-                    running = False
+                    if name_text == '' or phy_text == '' or chem_text == '' or math_text == '':
+                        txt = display_font.render('"SPACE" TO SORT', 1, white)
+                        screen.blit(txt, (width//2-50, 20))
+                    else:
+                        running = False
 
                 if name_active == True:
                     if event.key == K_BACKSPACE:
