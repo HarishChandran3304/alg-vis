@@ -400,7 +400,7 @@ def savecsv(grid):
 	filename = filedialog.asksaveasfilename(initialdir="./Algorithms/PathFinding/saved/", title="Select file", filetypes=(("CSV Files","*.csv"),("All","*.*")))
 	tkwin.destroy()
 	
-	if filename is None:
+	if filename is None or filename == "":
 	 	return
 	
 	filename = filename+".csv" if filename[-4:] != ".csv" else filename
@@ -434,7 +434,7 @@ def loadcsv(grid):
 	filename = filedialog.askopenfilename(initialdir="./Algorithms/PathFinding/saved/", title="Select file", filetypes=(("CSV Files","*.csv"),("All","*.*")))
 	tkwin.destroy()
 	
-	if filename is None:
+	if filename is None or filename == "":
 	 	return
 
 	with open(filename, "r") as file:
