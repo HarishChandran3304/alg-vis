@@ -573,7 +573,7 @@ def handlerpress(rows, width, start, end, state, statecolour, grid):
 
 
 #MAIN
-def main(surface, width):
+def main(surface=screen, width=720):
 	'''
 	Main Function
 	'''
