@@ -189,7 +189,8 @@ class Button():
         self.font = font
         self.fontsize = fontsize
         self.fontcolour = fontcolour
-        
+    
+    #CLASS METHODS
     def draw(self, surface, outlinecolour=None):
         '''
         Draws the button on the screen
@@ -286,6 +287,9 @@ def astar(draw, grid, start, end):
     return False
 
 def dijkstra(draw, grid, start, end):
+    '''
+    Dijkstra's Algorithm Implementation
+    '''
     visited = {node: False for row in grid for node in row}
     distance = {node: math.inf for row in grid for node in row}
     distance[start] = 0
@@ -415,7 +419,7 @@ def displayui(surface, grid, rows, width, state, statecolour, time):
 
 def visualizeastar(surface, rows, width, grid, start, end, state, statecolour):
     '''
-    Starts the visualization of the algorithm
+    Starts the visualization of A* Search
     '''
     global elapsed
     visualizeastarbtn.colour = GREY
@@ -454,7 +458,7 @@ def visualizeastar(surface, rows, width, grid, start, end, state, statecolour):
 
 def visualizedijkstra(surface, rows, width, grid, start, end, state, statecolour):
     '''
-    Starts the visualization of the algorithm
+    Starts the visualization of Dijkstra's algorithm
     '''
     global elapsed
     visualizeastarbtn.colour = GREY
@@ -492,6 +496,9 @@ def visualizedijkstra(surface, rows, width, grid, start, end, state, statecolour
     return state, statecolour
 
 def savecsv(grid):
+    '''
+    Saves the current grid configuration as a csv file
+    '''
     tkwin = Tk()
     tkwin.withdraw()
     filename = filedialog.asksaveasfilename(initialdir="./Algorithms/PathFinding/saved/", title="Select file", filetypes=(("CSV Files","*.csv"),("All","*.*")))
@@ -521,6 +528,9 @@ def savecsv(grid):
         writer.writerows(gridconfig)
 
 def loadcsv(grid):
+    '''
+    Loads a grid configuration from a csv file
+    '''
     start = None
     end = None
     state = "Start node missing!"
@@ -638,31 +648,6 @@ def handleleftclick(surface, pos, rows, width, grid, start, end, state, statecol
             
 def handlerightclick(pos, rows, width, grid, start, end, state, statecolour):
     '''
-    Handles all the right clicks
-    '''
-    row, col = getclickedpos(pos, rows, width)
-    try:
-        node = grid[row][col]
-        
-        if node == start:
-            start = None
-            state = "Start node missing!"
-            statecolour = STATERED
-        
-        elif node == end:
-            end = None
-            state = "End node missing!"
-            statecolour = STATERED
-        
-        node.reset()
-        
-        return start, end, state, statecolour, grid
-    
-    except:
-        pass
-
-def handlerpress(rows, width, start, end, state, statecolour, grid):
-    '''
     Handles "r" press
     '''
     start = None
@@ -713,10 +698,6 @@ def main(surface, width):
             elif pygame.mouse.get_pressed()[2]: #Right mouse button
                 pos = pygame.mouse.get_pos()
                 start, end, state, statecolour, grid = handlerightclick(pos, rows, width, grid, start, end, state, statecolour)
-            
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_r:
-                    start, end, state, statecolour, grid = handlerpress(rows, width, start, end, state, statecolour, grid)
 
     pygame.quit()
 
