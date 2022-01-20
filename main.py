@@ -33,7 +33,7 @@ def main_menu():
 
 def select_menu():
     selectmenu = pygame_menu.Menu(720, 1280, "Algorithms", theme=pygame_menu.themes.THEME_DARK)
-    selectmenu.add.button("Path-Finding Algorithms", launch_pathfinding_client, font_size=50)
+    selectmenu.add.button("Path-Finding Algorithms", pathfinding_instructions, font_size=50)
     selectmenu.add.vertical_margin(50)
     selectmenu.add.button("Sorting Algorithms", sorting_menu, font_size=50)
     selectmenu.add.vertical_margin(150)
@@ -50,6 +50,15 @@ def sorting_menu():
     smenu.add.vertical_margin(150)
     smenu.add.button("Back", select_menu, font_size=50)
     smenu.mainloop(screen)
+
+def pathfinding_instructions():
+    instruc = pygame_menu.Menu(720, 1280, "Instructions", theme=pygame_menu.themes.THEME_DARK)
+    instruc.add.label("-Left Click to add start and end nodes first\n-Left Click to then add barrier nodes\n-Right Click to remove nodes", max_char=-1, font_size=50, font_color="white")
+    instruc.add.vertical_margin(100)
+    instruc.add.button("Launch", launch_pathfinding_client, font_size=50)
+    instruc.add.vertical_margin(50)
+    instruc.add.button("Back", select_menu, font_size=25)
+    instruc.mainloop(screen)
 
 def launch_pathfinding_client():
     pathfinding.main(screen, 720)
