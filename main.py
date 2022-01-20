@@ -53,7 +53,7 @@ def sorting_menu():
 
 def pathfinding_instructions():
     instruc = pygame_menu.Menu(720, 1280, "Instructions", theme=pygame_menu.themes.THEME_DARK)
-    instruc.add.label("-Left Click to add start and end nodes first\n-Left Click to then add barrier nodes\n-Right Click to remove nodes", max_char=-1, font_size=50, font_color="white")
+    instruc.add.label("- Left Click to add start and end nodes first\n- Left Click to then add barrier nodes\n- Right Click to remove nodes", max_char=-1, font_size=50, font_color="white")
     instruc.add.vertical_margin(100)
     instruc.add.button("Launch", launch_pathfinding_client, font_size=50)
     instruc.add.vertical_margin(50)
