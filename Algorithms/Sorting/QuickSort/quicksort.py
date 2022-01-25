@@ -34,6 +34,7 @@ length = 600
 start_time = datetime.now()
 #DEFINING FONTS TO DISPLAY TEXT
 font = pygame.font.SysFont('times new roman', 20)
+small_font = pygame.font.SysFont('times new roman', 12)
 
 #DISPLAYING WINDOW
 screen = pygame.display.set_mode((width, length))
@@ -80,7 +81,10 @@ def display_bars():
     # Drawing the array values as lines
     for i in range(1, 70):
         pygame.draw.line(screen, all_colours[i], (distance_of_each_bar * i-3, 100), (distance_of_each_bar * i-3, height[i]*boundry_of_bars + 100), width_of_bar)
-
+        txt = small_font.render(str(height[i]), 1, white)
+        # font.render()
+        #POSITION OF TEXT
+        screen.blit(txt, (distance_of_each_bar * i-5, height[i]*boundry_of_bars + 105))
 #AFTER COMPARING TWO LINES THIS IS USED
 def refresh():
     display_bars()
@@ -100,37 +104,37 @@ def quicksort(height, l, r):
 		
 # TO PERFORM SORTING
 def partition(height, lower, higher):
-	for event in pygame.event.get():
+    for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                 elif event.type == pygame.KEYDOWN:
                     if event.key == K_ESCAPE:
                         pygame.quit()
 
-	pygame.event.pump()
-	pivot = height[higher]
+    pygame.event.pump()
+    pivot = height[higher]
     # COLOUR TURNS GREEN
-	all_colours[higher]= colours[2]
-	i = lower - 1
-	for j in range(lower, higher):
+    all_colours[higher]= colours[2]
+    i = lower - 1
+    for j in range(lower, higher):
 		# COLOURS TURN RED WHILE BEING COMPARED
-		all_colours[j] = colours[1]
-		refresh()
-		all_colours[higher] = colours[2]
-		all_colours[j] = colours[0]
-		all_colours[i] = colours[0]
+        all_colours[j] = colours[1]
+        refresh()
+        all_colours[higher] = colours[2]
+        all_colours[j] = colours[0]
+        all_colours[i] = colours[0]
 
-		if height[j] < pivot:
-			i += 1
-			all_colours[i]= colours[1]
-			height[i], height[j]= height[j], height[i]
+        if height[j] < pivot:
+            i += 1
+            all_colours[i]= colours[1]
+            height[i], height[j]= height[j], height[i]
 
-	refresh()
-	all_colours[i]= colours[0]
-	all_colours[higher]= colours[0]
-	height[i + 1], height[higher] = height[higher], height[i + 1]
+    refresh()
+    all_colours[i]= colours[0]
+    all_colours[higher]= colours[0]
+    height[i + 1], height[higher] = height[higher], height[i + 1]
 	
-	return i + 1
+    return i + 1
 	
 def main():
     running = True

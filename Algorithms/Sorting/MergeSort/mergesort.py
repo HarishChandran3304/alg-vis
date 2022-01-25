@@ -32,6 +32,7 @@ width = 1250
 length = 600
 #DEFINING FONTS TO DISPLAY TEXT
 font = pygame.font.SysFont('times new roman', 20)
+small_font = pygame.font.SysFont('times new roman', 12)
 
 #DISPLAYING WINDOW
 screen = pygame.display.set_mode((width, length))
@@ -76,7 +77,10 @@ def displaying_bars():
     #DISPLAYS THE BARS ON THE SCREEN
     for i in range(1, 70):
         pygame.draw.line(screen, all_colours[i], (distance_of_each_bar * i, 100), (distance_of_each_bar * i, height[i]*boundry_of_bars + 100), width_of_bar)
-
+        txt = small_font.render(str(height[i]), 1, white)
+        # font.render()
+        #POSITION OF TEXT
+        screen.blit(txt, (distance_of_each_bar * i-5, height[i]*boundry_of_bars + 105))
 #AFTER COMPARING TWO LINES THIS IS USED
 def refresh():
     screen.fill(black)
