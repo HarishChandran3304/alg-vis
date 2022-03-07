@@ -2,10 +2,7 @@
 import pygame
 import pygame_menu
 from Algorithms.PathFinding import pathfinding
-from Algorithms.Sorting.BubbleSort import bubblesort
-from Algorithms.Sorting.MergeSort import mergesort
-from Algorithms.Sorting.QuickSort import quicksort
-
+from Algorithms.Sorting import sorting
 
 #CONSTANTS
 SCREEN_WIDTH = 1280
@@ -35,21 +32,10 @@ def select_menu():
     selectmenu = pygame_menu.Menu(720, 1280, "Algorithms", theme=pygame_menu.themes.THEME_DARK)
     selectmenu.add.button("Path-Finding Algorithms", pathfinding_instructions, font_size=50)
     selectmenu.add.vertical_margin(50)
-    selectmenu.add.button("Sorting Algorithms", sorting_menu, font_size=50)
+    selectmenu.add.button("Sorting Algorithms", launch_sorting_client, font_size=50)
     selectmenu.add.vertical_margin(150)
     selectmenu.add.button("Back", main_menu, font_size=50)
     selectmenu.mainloop(screen)
-    
-def sorting_menu():
-    smenu = pygame_menu.Menu(720, 1280, "Sorting Algorithms", theme=pygame_menu.themes.THEME_DARK)
-    smenu.add.button("Bubble Sort", launch_bubblesort, font_size=50)
-    smenu.add.vertical_margin(50)
-    smenu.add.button("Merge Sort", launch_mergesort, font_size=50)
-    smenu.add.vertical_margin(100)
-    smenu.add.button("Quick Sort", launch_quicksort, font_size=50)
-    smenu.add.vertical_margin(150)
-    smenu.add.button("Back", select_menu, font_size=50)
-    smenu.mainloop(screen)
 
 def pathfinding_instructions():
     instruc = pygame_menu.Menu(720, 1280, "Instructions", theme=pygame_menu.themes.THEME_DARK)
@@ -61,16 +47,10 @@ def pathfinding_instructions():
     instruc.mainloop(screen)
 
 def launch_pathfinding_client():
-    pathfinding.main(screen, 720)
+    pathfinding.main(screen)
 
-def launch_bubblesort():
-    bubblesort.main()
-
-def launch_mergesort():
-    mergesort.main()
-
-def launch_quicksort():
-    quicksort.main()
+def launch_sorting_client():
+    sorting.main(screen)
 
 
 #MAIN LOOP

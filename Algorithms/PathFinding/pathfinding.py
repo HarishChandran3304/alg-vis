@@ -7,12 +7,14 @@ from tkinter import *
 from tkinter import filedialog
 import math
 
+
 #CONSTANTS
 SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
+THEMEGREY = (40, 41, 35) #Theme primary
+THEMEPURPLE = (71, 63, 255) #Theme secondary
 RED = (255, 0, 0) #No path found
 GREEN = (0, 255, 0) #Visited and open nodes
-BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0) #Visited but close nodes
 WHITE = (255, 255, 255) #Empty nodes
 BLACK = (0, 0, 0) #Barrier nodes
@@ -20,10 +22,6 @@ PURPLE = (128, 0, 128)  #Path nodes
 ORANGE = (255, 165 ,0) #Start node
 GREY = (128, 128, 128) #Grid lines
 CYAN = (64, 224, 208) #Destination node
-THEMEGREY = (40, 41, 35) #Theme primary
-THEMEPURPLE = (71, 63, 255) #Theme secondary
-BTNDARK = (71, 63, 255) #Button normal colour
-BTNLIGHT = (86, 99, 233) #Button hover colour
 STATERED = (198, 10, 9) #Status red colour
 STATEGREEN = (142, 200, 19) #Status green colour
 STATEYELLOW = (255, 218, 66) #Status yellow colour
@@ -39,7 +37,7 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 icon = pygame.image.load("Logo.svg")
 pygame.display.set_icon(icon)
-pygame.display.set_caption("A* Search")
+pygame.display.set_caption("Pathfinding Visualizer")
 
 
 #CLASSES
@@ -215,8 +213,7 @@ class Button():
             
         return False
 
-
-#CLASS INSTANCES
+#BUTTON CLASS INSTANCES
 clearbtn = Button(THEMEPURPLE, 725, 180, 550, 97, "Clear Grid")
 savebtn = Button(THEMEPURPLE, 725, 290, 550, 97, "Save")
 loadbtn = Button(THEMEPURPLE, 725, 400, 550, 97, "Load")
@@ -382,7 +379,7 @@ def getclickedpos(pos, rows, width):
     
     return row, col
 
-def status(surface, state, statecolour, font="verdana", fontsize=35, fontcolour=THEMEPURPLE):
+def displaystatus(surface, state, statecolour, font="verdana", fontsize=35, fontcolour=THEMEPURPLE):
     '''
     Displays the status of the algorithm
     '''
@@ -394,7 +391,7 @@ def status(surface, state, statecolour, font="verdana", fontsize=35, fontcolour=
     surface.blit(text1, (740, 20))
     surface.blit(text2, (740+text1.get_width(), 20))
 
-def timer(surface, time="", font="verdana", fontsize=30, fontcolour=THEMEPURPLE):
+def display_timer(surface, time="", font="verdana", fontsize=30, fontcolour=THEMEPURPLE):
     '''
     Displays the time elapsed for the algorithm
     '''
@@ -413,87 +410,9 @@ def displayui(surface, grid, rows, width, state, statecolour, time):
     clearbtn.draw(screen, THEMEPURPLE)
     savebtn.draw(screen, THEMEPURPLE)
     loadbtn.draw(screen, THEMEPURPLE)
-    status(screen, state, statecolour)
-    timer(screen, time)
+    displaystatus(screen, state, statecolour)
+    display_timer(screen, time)
     pygame.display.update()
-
-def visualizeastar(surface, rows, width, grid, start, end, state, statecolour):
-    '''
-    Starts the visualization of A* Search
-    '''
-    global elapsed
-    visualizeastarbtn.colour = GREY
-    visualizedijkstrabtn.colour = GREY
-
-    starttime = time()	
- 
-    for row in grid:
-        for node in row:
-            if node.colour == YELLOW or node.colour == GREEN or node.colour == THEMEPURPLE or node.colour == RED:
-                node.reset()
-    for row in grid:
-        for node in row:
-            node.updateneighbours(grid)
-        
-    found = astar(lambda: draw(surface, grid, rows, width), grid, start, end)
-
-    if not found:
-        for row in grid:
-            for node in row:
-                if node.colour == YELLOW:
-                    node.colour = RED
-        state = "No path possible!"
-        statecolour = STATERED
-    else:
-        for row in grid:
-            for node in row:
-                if node.colour == GREEN:
-                    node.colour = YELLOW
-        state = "Shortest path found!"
-        statecolour = STATEGREEN
-    
-    endtime = time()
-    elapsed = f'{round(endtime-starttime, 2)} sec'
-    return state, statecolour
-
-def visualizedijkstra(surface, rows, width, grid, start, end, state, statecolour):
-    '''
-    Starts the visualization of Dijkstra's algorithm
-    '''
-    global elapsed
-    visualizeastarbtn.colour = GREY
-    visualizedijkstrabtn.colour = GREY
-
-    starttime = time()	
- 
-    for row in grid:
-        for node in row:
-            if node.colour == YELLOW or node.colour == GREEN or node.colour == THEMEPURPLE or node.colour == RED:
-                node.reset()
-    for row in grid:
-        for node in row:
-            node.updateneighbours(grid)
-        
-    found = dijkstra(lambda: draw(surface, grid, rows, width), grid, start, end)
-
-    if not found:
-        for row in grid:
-            for node in row:
-                if node.colour == YELLOW:
-                    node.colour = RED
-        state = "No path possible!"
-        statecolour = STATERED
-    else:
-        for row in grid:
-            for node in row:
-                if node.colour == GREEN:
-                    node.colour = YELLOW
-        state = "Shortest path found!"
-        statecolour = STATEGREEN
-    
-    endtime = time()
-    elapsed = f'{round(endtime-starttime, 2)} sec'
-    return state, statecolour
 
 def savecsv(grid):
     '''
@@ -659,10 +578,90 @@ def handlerightclick(pos, rows, width, grid, start, end, state, statecolour):
     return start, end, state, statecolour, grid
 
 
-#MAIN
-def main(surface, width):
+#ALGORITHM IMPLEMENTATIONS
+def visualizeastar(surface, rows, width, grid, start, end, state, statecolour):
     '''
-    Main Function
+    Starts the visualization of A* Search
+    '''
+    global elapsed
+    visualizeastarbtn.colour = GREY
+    visualizedijkstrabtn.colour = GREY
+
+    starttime = time()	
+ 
+    for row in grid:
+        for node in row:
+            if node.colour == YELLOW or node.colour == GREEN or node.colour == THEMEPURPLE or node.colour == RED:
+                node.reset()
+    for row in grid:
+        for node in row:
+            node.updateneighbours(grid)
+        
+    found = astar(lambda: draw(surface, grid, rows, width), grid, start, end)
+
+    if not found:
+        for row in grid:
+            for node in row:
+                if node.colour == YELLOW:
+                    node.colour = RED
+        state = "No path possible!"
+        statecolour = STATERED
+    else:
+        for row in grid:
+            for node in row:
+                if node.colour == GREEN:
+                    node.colour = YELLOW
+        state = "Shortest path found!"
+        statecolour = STATEGREEN
+    
+    endtime = time()
+    elapsed = f'{round(endtime-starttime, 2)} sec'
+    return state, statecolour
+
+def visualizedijkstra(surface, rows, width, grid, start, end, state, statecolour):
+    '''
+    Starts the visualization of Dijkstra's algorithm
+    '''
+    global elapsed
+    visualizeastarbtn.colour = GREY
+    visualizedijkstrabtn.colour = GREY
+
+    starttime = time()	
+ 
+    for row in grid:
+        for node in row:
+            if node.colour == YELLOW or node.colour == GREEN or node.colour == THEMEPURPLE or node.colour == RED:
+                node.reset()
+    for row in grid:
+        for node in row:
+            node.updateneighbours(grid)
+        
+    found = dijkstra(lambda: draw(surface, grid, rows, width), grid, start, end)
+
+    if not found:
+        for row in grid:
+            for node in row:
+                if node.colour == YELLOW:
+                    node.colour = RED
+        state = "No path possible!"
+        statecolour = STATERED
+    else:
+        for row in grid:
+            for node in row:
+                if node.colour == GREEN:
+                    node.colour = YELLOW
+        state = "Shortest path found!"
+        statecolour = STATEGREEN
+    
+    endtime = time()
+    elapsed = f'{round(endtime-starttime, 2)} sec'
+    return state, statecolour
+
+
+#MAIN LOOP
+def main(surface, width=720):
+    '''
+    Main loop of the program
     '''
     
     global elapsed
@@ -676,8 +675,8 @@ def main(surface, width):
     state = "Start node missing!"
     statecolour = STATERED
  
-    run = True
-    while run:
+    running = True
+    while running:
         if start and end:
             visualizeastarbtn.colour = THEMEPURPLE
             visualizedijkstrabtn.colour = THEMEPURPLE
@@ -689,7 +688,7 @@ def main(surface, width):
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                run = False
+                running = False
             
             if pygame.mouse.get_pressed()[0]: #Left mouse button
                 pos = pygame.mouse.get_pos()
@@ -704,4 +703,4 @@ def main(surface, width):
 
 #MAIN CALL
 if __name__ == "__main__":
-    main(screen, 720)
+    main(screen)
